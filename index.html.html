@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Driving License Verification System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter, Noto Sans & Noto Sans Devanagari -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@600;700&family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for crisp icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans', 'Segoe UI', 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #d7ebe5;
+            /* Cloudy pastel mint-green/teal atmospheric watercolor background matching reference screenshots */
+            background-image: 
+                radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 42%),
+                radial-gradient(circle at 84% 16%, rgba(192, 230, 220, 0.88) 0%, rgba(192, 230, 220, 0) 46%),
+                radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0) 52%),
+                radial-gradient(circle at 20% 82%, rgba(180, 222, 211, 0.82) 0%, rgba(180, 222, 211, 0) 48%),
+                radial-gradient(circle at 86% 78%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 44%),
+                radial-gradient(circle at 52% 90%, rgba(171, 216, 204, 0.78) 0%, rgba(171, 216, 204, 0) 55%),
+                linear-gradient(135deg, #d5ebe5 0%, #e3f1ec 50%, #cde4de 100%);
+            background-attachment: fixed;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        .devanagari-text {
+            font-family: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+        }
+
+        /* Subtle crisp text shadow for the white tagline row */
+        .tagline-shadow {
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.04);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.18);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="relative flex flex-col min-h-screen selection:bg-[#1242b8] selection:text-white">
+
+    <!-- Top-Right Minimalist Hamburger Button -->
+    <header class="fixed top-0 right-0 z-40 p-4 sm:p-5">
+        <button id="menuToggleBtn" aria-label="Open Navigation Menu" class="p-2 rounded-lg text-gray-900 hover:bg-white/60 active:scale-95 transition-all focus:outline-none cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Slide-Over Navigation Drawer -->
+    <div id="drawerBackdrop" class="fixed inset-0 bg-black/30 backdrop-blur-[1px] z-40 hidden opacity-0 transition-opacity duration-200"></div>
+    <aside id="navDrawer" class="fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-white/95 backdrop-blur-md shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between border-l border-gray-200">
+        <div>
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#dc0816]"></span>
+                    <span class="font-bold text-gray-800 text-sm tracking-wide uppercase">Menu</span>
+                </div>
+                <button id="closeDrawerBtn" aria-label="Close Menu" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links (Clean: Home & Admin Login / Admin Panel) -->
+            <nav class="p-4 space-y-2.5">
+                <button onclick="switchView('home')" id="navHomeBtn" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer">
+                    <i class="fa-solid fa-house w-5 text-center text-base"></i>
+                    <span>Home</span>
+                </button>
+
+                <button onclick="handleAdminMenuClick()" id="navAdminBtn" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer">
+                    <i class="fa-solid fa-user-shield w-5 text-center text-base text-[#dc0816]"></i>
+                    <span id="navAdminLabel">Admin Login</span>
+                </button>
+
+                <button onclick="logoutAdmin()" id="navLogoutBtn" class="hidden w-full items-center gap-3.5 px-4 py-3 rounded-xl text-left font-bold text-sm text-[#dc0816] hover:bg-red-50 transition-all border border-transparent cursor-pointer">
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center text-base"></i>
+                    <span>Logout</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-4 border-t border-gray-200 bg-gray-50/80 text-xs text-gray-500 flex items-center justify-between">
+            <span class="font-semibold text-gray-600">Verification Portal</span>
+            <span class="flex items-center gap-1.5 text-emerald-600 font-semibold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
+            </span>
+        </div>
+    </aside>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 sm:p-7 border border-gray-100 relative">
+            <button type="button" onclick="closeAdminLoginModal()" aria-label="Close Login Modal" class="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-full bg-blue-50 text-[#1242b8] flex items-center justify-center mb-3.5 mx-auto border border-blue-100">
+                <i class="fa-solid fa-user-lock text-xl"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 text-center">Admin Login</h3>
+            <p class="text-xs text-gray-500 text-center mt-1 mb-5">Sign in to manage driving license records</p>
+
+            <div id="loginErrorAlert" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
+                <span>Invalid username or password.</span>
+            </div>
+
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Username</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="loginUsername" required placeholder="Enter username" autocomplete="username" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="password" id="loginPassword" required placeholder="Enter password" autocomplete="current-password" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm shadow-sm transition-colors cursor-pointer">
+                    Login to Backend
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Box -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-sm font-medium border border-gray-700">
+            <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+            <span id="toastMessage">Action completed</span>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100 transform scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-red-100 text-[#dc0816] flex items-center justify-center mb-4 mx-auto">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            </div>
+            <h3 id="confirmTitle" class="text-lg font-bold text-gray-900 text-center mb-1">Confirm Action</h3>
+            <p id="confirmText" class="text-sm text-gray-600 text-center mb-6">Are you sure you want to proceed?</p>
+            <div class="flex gap-3">
+                <button id="confirmCancelBtn" class="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button id="confirmProceedBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-[#dc0816] text-white font-semibold text-sm hover:bg-red-700 transition-colors shadow-sm cursor-pointer">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: LANDING / SEARCH VIEW (Authentic match to reference image 2)  -->
+    <!-- ===================================================================== -->
+    <main id="viewHome" class="flex-1 flex flex-col items-center justify-center px-4 py-10 transition-opacity duration-200">
+        <div class="w-full max-w-xl flex flex-col items-center text-center">
+            
+            <!-- Main Bold Royal Blue Two-Line Heading -->
+            <h1 class="text-[28px] sm:text-[36px] md:text-[40px] font-extrabold text-[#1242b8] leading-[1.18] tracking-tight mb-7">
+                Welcome To Online<br>
+                Verification Services
+            </h1>
+
+            <!-- Search Input + Crimson Red Search Button -->
+            <form id="homeSearchForm" class="w-full max-w-[460px] flex items-stretch shadow-[0_4px_14px_rgba(0,0,0,0.08)] rounded-[6px] overflow-hidden bg-white">
+                <input 
+                    type="text" 
+                    id="homeSearchInput" 
+                    placeholder="Type DL/CNIC Number Without Dash" 
+                    autocomplete="off"
+                    class="flex-1 px-4 py-3.5 text-[14px] sm:text-[15px] text-gray-800 placeholder-gray-400 bg-white focus:outline-none"
+                >
+                <button 
+                    type="submit" 
+                    aria-label="Search License"
+                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] active:bg-[#9e020f] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                >
+                    <i class="fa-solid fa-magnifying-glass text-[17px]"></i>
+                </button>
+            </form>
+
+            <!-- Simple Inline Searching Indicator (Directly below Search Bar) -->
+            <div id="homeSearchingIndicator" class="hidden w-full max-w-[460px] mt-3.5 py-2.5 px-4 rounded-lg bg-white/85 backdrop-blur-sm border border-white shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
+                <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
+                <span>Searching...</span>
+            </div>
+
+            <!-- Clean Inline Not Found Alert (No sample clutter) -->
+            <div id="homeNotFoundAlert" class="hidden w-full max-w-[460px] mt-3.5 bg-red-50/95 border border-red-200 text-red-800 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
+                <span>No verification record found for "<strong id="homeNotFoundQuery"></strong>".</span>
+            </div>
+
+            <!-- White Tagline Row with Bullet Dots -->
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-7 text-white font-bold text-[17px] sm:text-[19px] tagline-shadow select-none">
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
+                    Secure
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
+                    Fast
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
+                    Reliable
+                </span>
+            </div>
+
+            <!-- Three Vertical Trust Badges -->
+            <div class="mt-11 flex flex-col items-start space-y-5 text-left">
+                <!-- Digital Security -->
+                <div class="flex items-center gap-3.5">
+                    <div class="w-7 h-7 flex items-center justify-center">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L4 5.5V11.5C4 16.8 7.4 21.6 12 23C16.6 21.6 20 16.8 20 11.5V5.5L12 2Z" fill="#16a34a"/>
+                            <path d="M12 4.2V20.8C15.5 19.6 18 15.8 18 11.5V6.8L12 4.2Z" fill="#86efac"/>
+                        </svg>
+                    </div>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">Digital Security</span>
+                </div>
+
+                <!-- 24/7 Available -->
+                <div class="flex items-center gap-3.5">
+                    <div class="w-7 h-7 flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-2xs">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">24/7 Available</span>
+                </div>
+
+                <!-- Global Access -->
+                <div class="flex items-center gap-3.5">
+                    <div class="w-7 h-7 flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full bg-[#2563eb] flex items-center justify-center text-white shadow-2xs">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <path d="M4.5 7.5h15M4.5 16.5h15"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">Global Access</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: RESULT BANNER VIEW (Exact match to reference screenshot)      -->
+    <!-- ===================================================================== -->
+    <section id="viewResult" class="hidden flex-1 flex-col items-center px-3 sm:px-6 pt-9 sm:pt-11 pb-14">
+        <div class="w-full max-w-[760px] flex flex-col items-center">
+
+            <!-- Official Government Header Banner Card -->
+            <div class="w-full bg-[#f8fafc] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-5 sm:px-9 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 border border-white">
+                
+                <!-- Official Coat of Arms / Emblem of Nepal (Image with crisp SVG Fallback) -->
+                <div class="shrink-0 w-[124px] h-[124px] sm:w-[138px] sm:h-[138px] flex items-center justify-center">
+                    <img 
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Emblem_of_Nepal.svg/512px-Emblem_of_Nepal.svg.png" 
+                        alt="Emblem of Nepal" 
+                        class="w-full h-full object-contain select-none"
+                        onerror="this.style.display='none'; document.getElementById('nepalEmblemFallback').classList.remove('hidden');"
+                    >
+                    <!-- High-Detail SVG Fallback if offline -->
+                    <svg id="nepalEmblemFallback" viewBox="0 0 240 240" class="hidden w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#bae6fd"/>
+                                <stop offset="100%" stop-color="#e0f2fe"/>
+                            </linearGradient>
+                            <linearGradient id="mountainBlue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#1d4ed8"/>
+                                <stop offset="100%" stop-color="#1e3a8a"/>
+                            </linearGradient>
+                            <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#22c55e"/>
+                                <stop offset="100%" stop-color="#15803d"/>
+                            </linearGradient>
+                            <clipPath id="innerCircle">
+                                <circle cx="120" cy="118" r="68"/>
+                            </clipPath>
+                        </defs>
+                        <circle cx="120" cy="118" r="72" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <g clip-path="url(#innerCircle)">
+                            <rect x="45" y="45" width="150" height="150" fill="url(#skyGrad)"/>
+                            <polygon points="48,125 84,74 106,102 126,64 156,104 192,125" fill="url(#mountainBlue)"/>
+                            <polygon points="84,74 96,90 88,92 82,86 75,92 68,89" fill="#ffffff"/>
+                            <polygon points="126,64 142,86 133,89 125,81 117,89 109,85" fill="#ffffff"/>
+                            <polygon points="156,104 166,115 154,116 147,112" fill="#ffffff"/>
+                            <path d="M45,130 Q85,104 122,124 T195,122 L195,158 L45,158 Z" fill="url(#hillGrad)"/>
+                            <path d="M45,142 Q95,126 140,140 T195,136 L195,164 L45,164 Z" fill="#16a34a"/>
+                            <rect x="45" y="152" width="150" height="42" fill="#fde047"/>
+                            <path d="M76,125 L94,121 L114,127 L134,132 L162,138 L159,147 L132,144 L110,139 L88,136 L74,132 Z" fill="#ffffff" stroke="#64748b" stroke-width="1"/>
+                            <path d="M90,162 C102,155 112,155 120,161 C128,155 138,155 150,162 L146,174 C134,170 126,173 120,175 C114,173 106,170 94,174 Z" fill="#f3c69f" stroke="#78350f" stroke-width="1.4"/>
+                            <line x1="120" y1="159" x2="120" y2="174" stroke="#78350f" stroke-width="1.2"/>
+                        </g>
+                        <circle cx="120" cy="118" r="68" fill="none" stroke="#991b1b" stroke-width="2"/>
+                        <g fill="#eab308" stroke="#854d0e" stroke-width="0.7">
+                            <path d="M68,162 Q88,176 112,178" fill="none" stroke="#ca8a04" stroke-width="2.5"/>
+                            <ellipse cx="76" cy="166" rx="4.5" ry="2" transform="rotate(28 76 166)"/>
+                            <ellipse cx="86" cy="171" rx="4.5" ry="2" transform="rotate(22 86 171)"/>
+                            <ellipse cx="96" cy="175" rx="4.5" ry="2" transform="rotate(15 96 175)"/>
+                            <ellipse cx="106" cy="177" rx="4.5" ry="2" transform="rotate(8 106 177)"/>
+                            <path d="M172,162 Q152,176 128,178" fill="none" stroke="#ca8a04" stroke-width="2.5"/>
+                            <ellipse cx="164" cy="166" rx="4.5" ry="2" transform="rotate(-28 164 166)"/>
+                            <ellipse cx="154" cy="171" rx="4.5" ry="2" transform="rotate(-22 154 171)"/>
+                            <ellipse cx="144" cy="175" rx="4.5" ry="2" transform="rotate(-15 144 175)"/>
+                            <ellipse cx="134" cy="177" rx="4.5" ry="2" transform="rotate(-8 134 177)"/>
+                        </g>
+                        <g fill="#dc2626" stroke="#7f1d1d" stroke-width="0.9">
+                            <circle cx="52" cy="150" r="9.5"/><circle cx="44" cy="130" r="10"/><circle cx="43" cy="108" r="10"/>
+                            <circle cx="49" cy="86" r="9.5"/><circle cx="62" cy="68" r="9"/><circle cx="79" cy="54" r="8"/>
+                            <circle cx="188" cy="150" r="9.5"/><circle cx="196" cy="130" r="10"/><circle cx="197" cy="108" r="10"/>
+                            <circle cx="191" cy="86" r="9.5"/><circle cx="178" cy="68" r="9"/><circle cx="161" cy="54" r="8"/>
+                        </g>
+                        <g transform="translate(108, 12)">
+                            <line x1="2" y1="0" x2="2" y2="38" stroke="#78350f" stroke-width="2.2"/>
+                            <polygon points="3,2 25,14 10,14 27,28 3,28" fill="#dc2626" stroke="#1e3a8a" stroke-width="1.8"/>
+                            <circle cx="9" cy="11" r="1.8" fill="#ffffff"/>
+                            <circle cx="9" cy="22" r="2.2" fill="#ffffff"/>
+                        </g>
+                        <path d="M44,174 Q120,200 196,174 L203,188 Q120,216 37,188 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.2"/>
+                        <text x="120" y="195" text-anchor="middle" fill="#ffffff" font-size="7.2" font-weight="bold" font-family="Noto Sans Devanagari, sans-serif">
+                            जननी जन्मभूमिश्च स्वर्गादपि गरीयसी
+                        </text>
+                    </svg>
+                </div>
+
+                <!-- Four Stacked Lines of Official Government Typography -->
+                <div class="text-center sm:text-left leading-snug space-y-0.5">
+                    <div class="text-[#111827] font-bold text-[15px] sm:text-[16.5px]">
+                        Government of Nepal
+                    </div>
+                    <div class="text-[#2d58a7] font-semibold text-[15px] sm:text-[18px]">
+                        Ministry of Physical Infrastructure and Transport
+                    </div>
+                    <div class="text-[#111827] font-extrabold text-[17px] sm:text-[21px] tracking-tight">
+                        Department of Transport Management
+                    </div>
+                    <div class="text-[#d62828] font-bold text-[19px] sm:text-[23px] tracking-tight pt-0.5">
+                        Online Driving License System
+                    </div>
+                </div>
+            </div>
+
+            <!-- Devanagari Sub-heading Centered Below White Card -->
+            <h2 class="devanagari-text text-[#1f2937] font-bold text-[20px] sm:text-[23px] mt-3.5 mb-3 tracking-wide">
+                अनुज्ञा प्रमाणिकरण
+            </h2>
+
+            <!-- Active Search Bar Matching Table Width -->
+            <form id="resultSearchForm" class="w-full flex items-stretch bg-white rounded-[5px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden border border-gray-200/80 mb-3.5">
+                <input 
+                    type="text" 
+                    id="resultSearchInput" 
+                    placeholder="Type DL/CNIC Number Without Dash" 
+                    autocomplete="off"
+                    class="flex-1 px-4 py-2.5 text-[14px] sm:text-[15px] text-gray-800 bg-white focus:outline-none font-medium"
+                >
+                <button 
+                    type="submit" 
+                    aria-label="Search Again"
+                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] active:bg-[#9e020f] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                >
+                    <i class="fa-solid fa-magnifying-glass text-[16px]"></i>
+                </button>
+            </form>
+
+            <!-- Simple Inline Searching Indicator Directly Below Search Bar -->
+            <div id="resultSearchingIndicator" class="hidden w-full mb-3.5 py-3 px-4 rounded-[6px] bg-white/90 border border-gray-200/80 shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
+                <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
+                <span>Searching...</span>
+            </div>
+
+            <!-- Not Found Banner (Shown if user searches invalid ID from Result view) -->
+            <div id="resultNotFoundBanner" class="hidden w-full bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-[6px] mb-3.5 flex flex-wrap items-center justify-between gap-2 shadow-sm">
+                <div class="flex items-center gap-2.5 text-sm">
+                    <i class="fa-solid fa-circle-exclamation text-[#dc0816] text-base"></i>
+                    <span>No record found for License Number <strong id="resultNotFoundQuery"></strong>.</span>
+                </div>
+                <button type="button" onclick="switchView('home')" class="text-xs font-bold uppercase tracking-wider text-[#1242b8] hover:underline cursor-pointer">
+                    ← Back to Home
+                </button>
+            </div>
+
+            <!-- Verification Result Table Card (Directly below Search Bar) -->
+            <div id="resultTableCard" class="w-full bg-white rounded-[6px] shadow-[0_3px_12px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-300/90">
+                <!-- Light Gray Header Row -->
+                <div class="bg-[#e5e7eb] px-4 py-2.5 text-center border-b border-gray-300">
+                    <span class="font-bold text-[#111827] text-[14px] sm:text-[15px]">
+                        License Number: <span id="resLicenseNumber">1110303937455</span>
+                    </span>
+                </div>
+
+                <!-- Zebra-Striped 2-Column Data Rows -->
+                <div class="divide-y divide-gray-200/80 text-[13.5px] sm:text-[14.5px]">
+                    <!-- Row 1: White -->
+                    <div class="grid grid-cols-2 bg-white">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Name</div>
+                        <div id="resName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zeeshan</div>
+                    </div>
+
+                    <!-- Row 2: Light Gray -->
+                    <div class="grid grid-cols-2 bg-[#f4f5f7]">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Father Name</div>
+                        <div id="resFatherName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zer Ali</div>
+                    </div>
+
+                    <!-- Row 3: White -->
+                    <div class="grid grid-cols-2 bg-white">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Date of Birth</div>
+                        <div id="resDob" class="px-4 py-2.5 text-[#1f2937] font-medium">15 Aug 1996</div>
+                    </div>
+
+                    <!-- Row 4: Light Gray -->
+                    <div class="grid grid-cols-2 bg-[#f4f5f7]">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">First Issue</div>
+                        <div id="resFirstIssue" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
+                    </div>
+
+                    <!-- Row 5: White -->
+                    <div class="grid grid-cols-2 bg-white">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Issue / Renewal</div>
+                        <div id="resIssueRenewal" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
+                    </div>
+
+                    <!-- Row 6: Light Gray -->
+                    <div class="grid grid-cols-2 bg-[#f4f5f7]">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Validity</div>
+                        <div id="resValidity" class="px-4 py-2.5 text-[#1f2937] font-medium">09 Mar 2029</div>
+                    </div>
+
+                    <!-- Row 7: White -->
+                    <div class="grid grid-cols-2 bg-white">
+                        <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Category</div>
+                        <div id="resCategory" class="px-4 py-2.5 text-[#1f2937] font-medium uppercase">M.CYCLE + M.CAR / JEEP</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtle Bottom Action Bar -->
+            <div id="resultActionsBar" class="w-full mt-4 flex items-center justify-start text-xs sm:text-sm text-gray-700 px-1">
+                <button onclick="switchView('home')" class="inline-flex items-center gap-1.5 font-semibold text-gray-700 hover:text-[#1242b8] transition-colors bg-white/75 hover:bg-white px-3.5 py-2 rounded-lg shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-arrow-left text-xs"></i> Back to Home
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: ADMIN BACKEND PORTAL (Full CRUD Database Management)          -->
+    <!-- ===================================================================== -->
+    <section id="viewAdmin" class="hidden flex-1 flex-col items-center px-4 sm:px-6 pt-14 pb-16">
+        <div class="w-full max-w-5xl space-y-6">
+
+            <!-- Admin Top Header Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-5 sm:p-6 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="px-2.5 py-0.5 rounded-md bg-red-100 text-[#dc0816] font-bold text-xs uppercase tracking-wider">Backend Portal</span>
+                        <span class="text-xs text-gray-500 font-medium">DoTM License Database</span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">
+                        Driving License Records Management
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
+                        Add, edit, delete, or preview driving license records. Changes are saved automatically and reflected live on the verification portal.
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <button onclick="switchView('home')" class="px-4 py-2.5 rounded-lg bg-[#1242b8] hover:bg-blue-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-sm flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-house"></i> Home
+                    </button>
+                    <button onclick="confirmResetDatabase()" class="px-3.5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Default
+                    </button>
+                    <button onclick="logoutAdmin()" class="px-3.5 py-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-[#dc0816] font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 border border-red-200 cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add / Edit Record Form Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-5 sm:p-6 border border-white">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3.5 mb-5">
+                    <h2 id="formModeTitle" class="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-[#dc0816]"></i>
+                        <span>Add New License Record</span>
+                    </h2>
+                    <button id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs font-semibold text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1.5 rounded-lg cursor-pointer">
+                        Cancel Edit
+                    </button>
+                </div>
+
+                <form id="adminRecordForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <input type="hidden" id="editOriginalLicense" value="">
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">License / CNIC No. *</label>
+                        <input type="text" id="fieldLicenseNumber" required placeholder="e.g. 1110303937455" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8] uppercase font-medium">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Full Name *</label>
+                        <input type="text" id="fieldName" required placeholder="e.g. Zeeshan" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Father Name *</label>
+                        <input type="text" id="fieldFatherName" required placeholder="e.g. Zer Ali" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Date of Birth *</label>
+                        <input type="text" id="fieldDob" required placeholder="e.g. 15 Aug 1996" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">First Issue Date *</label>
+                        <input type="text" id="fieldFirstIssue" required placeholder="e.g. 10 Mar 2019" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Issue / Renewal *</label>
+                        <input type="text" id="fieldIssueRenewal" required placeholder="e.g. 10 Mar 2019" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Validity Date *</label>
+                        <input type="text" id="fieldValidity" required placeholder="e.g. 09 Mar 2029" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Category *</label>
+                        <input type="text" id="fieldCategory" required placeholder="e.g. M.CYCLE + M.CAR / JEEP" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8] uppercase">
+                    </div>
+
+                    <div class="sm:col-span-2 lg:col-span-4 flex justify-end pt-2">
+                        <button type="submit" id="saveRecordBtn" class="px-6 py-2.5 rounded-lg bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span id="saveRecordBtnText">Save License Record</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Existing Records Table Card -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-white overflow-hidden">
+                <div class="p-5 sm:px-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900">Stored License Records</h3>
+                        <span id="recordCountBadge" class="px-2.5 py-0.5 rounded-full bg-blue-100 text-[#1242b8] font-bold text-xs">6</span>
+                    </div>
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="adminFilterInput" placeholder="Filter by ID or Name..." class="w-full pl-9 pr-3 py-1.5 rounded-lg border border-gray-300 text-xs sm:text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100/90 text-gray-600 text-[11px] uppercase tracking-wider border-b border-gray-200">
+                                <th class="py-3 px-4 font-bold">License No.</th>
+                                <th class="py-3 px-4 font-bold">Full Name</th>
+                                <th class="py-3 px-4 font-bold hidden md:table-cell">Father Name</th>
+                                <th class="py-3 px-4 font-bold hidden sm:table-cell">Validity</th>
+                                <th class="py-3 px-4 font-bold hidden lg:table-cell">Category</th>
+                                <th class="py-3 px-4 font-bold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminRecordsTableBody" class="divide-y divide-gray-200 text-xs sm:text-sm">
+                            <!-- Rows rendered dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script type="module">
+        // =========================================================================
+        // 1. CLOUD DATABASE IMPORTS & INITIALIZATION
+        // =========================================================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nepal-dotm-default-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        // =========================================================================
+        // 2. DEFAULT SEED DATA (Includes Zeeshan 1110303937455 + Fursang Lama DL2333786211)
+        // =========================================================================
+        const ADMIN_AUTH_KEY = 'nepal_dotm_admin_logged_in';
+        const COLLECTION_NAME = 'driving_licenses';
+
+        const DEFAULT_RECORDS = [
+            {
+                licenseNumber: '1110303937455',
+                name: 'Zeeshan',
+                fatherName: 'Zer Ali',
+                dob: '15 Aug 1996',
+                firstIssue: '10 Mar 2019',
+                issueRenewal: '10 Mar 2019',
+                validity: '09 Mar 2029',
+                category: 'M.CYCLE + M.CAR / JEEP'
+            },
+            {
+                licenseNumber: 'DL2333786211',
+                name: 'Fursang Lama',
+                fatherName: 'Dema Lama',
+                dob: '02 Feb 1994',
+                firstIssue: '25 Apr 2018',
+                issueRenewal: '25 Apr 2018',
+                validity: '24 Apr 2028',
+                category: 'M.CYCLE + M.CAR / JEEP'
+            },
+            {
+                licenseNumber: 'DL0489215430',
+                name: 'Ramesh Bahadur Thapa',
+                fatherName: 'Tek Bahadur Thapa',
+                dob: '14 Aug 1990',
+                firstIssue: '12 Nov 2016',
+                issueRenewal: '15 Nov 2021',
+                validity: '14 Nov 2026',
+                category: 'A - MOTORCYCLE / SCOOTER'
+            },
+            {
+                licenseNumber: 'DL0912457802',
+                name: 'Sita Kumari Shrestha',
+                fatherName: 'Hari Prasad Shrestha',
+                dob: '21 Mar 1996',
+                firstIssue: '08 Jan 2020',
+                issueRenewal: '08 Jan 2020',
+                validity: '07 Jan 2030',
+                category: 'B - CAR / JEEP / DELIVERY VAN'
+            },
+            {
+                licenseNumber: 'DL1178349025',
+                name: 'Bikash Gurung',
+                fatherName: 'Man Bahadur Gurung',
+                dob: '05 Dec 1988',
+                firstIssue: '19 Jun 2014',
+                issueRenewal: '22 Jun 2024',
+                validity: '21 Jun 2029',
+                category: 'A + B + C - TEMPO / AUTO'
+            },
+            {
+                licenseNumber: 'DL3056128894',
+                name: 'Anjali Tamang',
+                fatherName: 'Dorje Tamang',
+                dob: '30 Sep 1998',
+                firstIssue: '11 Feb 2022',
+                issueRenewal: '11 Feb 2022',
+                validity: '10 Feb 2032',
+                category: 'K - SCOOTER / MOPED'
+            }
+        ];
+
+        // =========================================================================
+        // 3. STATE & CLOUD STORAGE HELPERS
+        // =========================================================================
+        let recordsCache = JSON.parse(JSON.stringify(DEFAULT_RECORDS));
+
+        function normalizeId(str) {
+            return String(str || '').replace(/[\s\-]/g, '').toUpperCase();
+        }
+
+        function getLicensesCollectionRef() {
+            return collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME);
+        }
+
+        function getLicenseDocRef(licenseNumber) {
+            const docId = normalizeId(licenseNumber);
+            return doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, docId);
+        }
+
+        async function seedDefaultRecordsToCloud() {
+            if (!db || !currentUser) return;
+            for (const rec of DEFAULT_RECORDS) {
+                await setDoc(getLicenseDocRef(rec.licenseNumber), rec);
+            }
+        }
+
+        async function saveRecordToCloud(record) {
+            const normalized = normalizeId(record.licenseNumber);
+            const idx = recordsCache.findIndex(r => normalizeId(r.licenseNumber) === normalized);
+            if (idx !== -1) {
+                recordsCache[idx] = record;
+            } else {
+                recordsCache.unshift(record);
+            }
+            renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
+
+            if (!db || !currentUser) return;
+            try {
+                await setDoc(getLicenseDocRef(record.licenseNumber), record);
+            } catch (err) {
+                console.error('Cloud save error:', err);
+                showToast('Failed to sync record to cloud', 'error');
+            }
+        }
+
+        async function deleteRecordFromCloud(licenseNumber) {
+            const target = normalizeId(licenseNumber);
+            recordsCache = recordsCache.filter(r => normalizeId(r.licenseNumber) !== target);
+            renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
+
+            if (!db || !currentUser) return;
+            try {
+                await deleteDoc(getLicenseDocRef(licenseNumber));
+            } catch (err) {
+                console.error('Cloud delete error:', err);
+                showToast('Failed to delete record from cloud', 'error');
+            }
+        }
+
+        async function resetCloudDatabase() {
+            if (!db || !currentUser) {
+                recordsCache = JSON.parse(JSON.stringify(DEFAULT_RECORDS));
+                renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
+                return;
+            }
+            try {
+                const defaultIds = new Set(DEFAULT_RECORDS.map(r => normalizeId(r.licenseNumber)));
+                for (const existing of recordsCache) {
+                    const id = normalizeId(existing.licenseNumber);
+                    if (!defaultIds.has(id)) {
+                        await deleteDoc(getLicenseDocRef(existing.licenseNumber));
+                    }
+                }
+                await seedDefaultRecordsToCloud();
+            } catch (err) {
+                console.error('Cloud reset error:', err);
+                showToast('Error resetting cloud database', 'error');
+            }
+        }
+
+        async function initCloudSync() {
+            if (!firebaseConfig) {
+                renderAdminTable();
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+
+                if (!currentUser) return;
+
+                let isInitialSnapshot = true;
+                onSnapshot(
+                    getLicensesCollectionRef(),
+                    async (snapshot) => {
+                        if (snapshot.empty && isInitialSnapshot) {
+                            isInitialSnapshot = false;
+                            await seedDefaultRecordsToCloud();
+                            return;
+                        }
+                        isInitialSnapshot = false;
+                        const liveList = [];
+                        snapshot.forEach((docSnap) => {
+                            const data = docSnap.data();
+                            if (data && data.licenseNumber) {
+                                liveList.push(data);
+                            }
+                        });
+                        if (liveList.length > 0) {
+                            recordsCache = liveList;
+                        }
+                        renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
+                    },
+                    (error) => {
+                        console.error('Real-time sync error:', error);
+                    }
+                );
+            } catch (err) {
+                console.error('Cloud initialization error:', err);
+            }
+        }
+
+        function findRecordByLicense(query) {
+            const target = normalizeId(query);
+            if (!target) return null;
+            return recordsCache.find(rec => normalizeId(rec.licenseNumber) === target) || null;
+        }
+
+        // =========================================================================
+        // 4. NAVIGATION, MENU DRAWER & ADMIN AUTHENTICATION
+        // =========================================================================
+        const navDrawer = document.getElementById('navDrawer');
+        const drawerBackdrop = document.getElementById('drawerBackdrop');
+
+        function openDrawer() {
+            drawerBackdrop.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                drawerBackdrop.classList.remove('opacity-0');
+                navDrawer.classList.remove('translate-x-full');
+            });
+        }
+
+        function closeDrawer() {
+            drawerBackdrop.classList.add('opacity-0');
+            navDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                drawerBackdrop.classList.add('hidden');
+            }, 250);
+        }
+
+        document.getElementById('menuToggleBtn').addEventListener('click', openDrawer);
+        document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+        drawerBackdrop.addEventListener('click', closeDrawer);
+
+        function isAdminAuthenticated() {
+            try {
+                return sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function updateAdminNavLabel() {
+            const label = document.getElementById('navAdminLabel');
+            const logoutBtn = document.getElementById('navLogoutBtn');
+            if (isAdminAuthenticated()) {
+                label.textContent = 'Admin Panel';
+                logoutBtn.classList.remove('hidden');
+                logoutBtn.classList.add('flex');
+            } else {
+                label.textContent = 'Admin Login';
+                logoutBtn.classList.add('hidden');
+                logoutBtn.classList.remove('flex');
+            }
+        }
+
+        function handleAdminMenuClick() {
+            closeDrawer();
+            if (isAdminAuthenticated()) {
+                switchView('admin');
+            } else {
+                openAdminLoginModal();
+            }
+        }
+
+        function openAdminLoginModal() {
+            const modal = document.getElementById('adminLoginModal');
+            document.getElementById('loginErrorAlert').classList.add('hidden');
+            document.getElementById('adminLoginForm').reset();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => document.getElementById('loginUsername').focus(), 50);
+        }
+
+        function closeAdminLoginModal() {
+            const modal = document.getElementById('adminLoginModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUsername').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+
+            if (user === 'asadullah' && pass === 'khan4000p') {
+                try {
+                    sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+                } catch (err) {}
+                updateAdminNavLabel();
+                closeAdminLoginModal();
+                switchView('admin');
+                showToast('Logged in as Administrator');
+            } else {
+                document.getElementById('loginErrorAlert').classList.remove('hidden');
+            }
+        });
+
+        function logoutAdmin() {
+            closeDrawer();
+            try {
+                sessionStorage.removeItem(ADMIN_AUTH_KEY);
+            } catch (err) {}
+            updateAdminNavLabel();
+            switchView('home');
+            showToast('Logged out successfully');
+        }
+
+        function switchView(viewName) {
+            if (viewName === 'admin' && !isAdminAuthenticated()) {
+                openAdminLoginModal();
+                return;
+            }
+
+            closeDrawer();
+
+            const viewHome = document.getElementById('viewHome');
+            const viewResult = document.getElementById('viewResult');
+            const viewAdmin = document.getElementById('viewAdmin');
+
+            const navHomeBtn = document.getElementById('navHomeBtn');
+            const navAdminBtn = document.getElementById('navAdminBtn');
+
+            viewHome.classList.add('hidden');
+            viewResult.classList.add('hidden');
+            viewAdmin.classList.add('hidden');
+
+            [navHomeBtn, navAdminBtn].forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
+                btn.classList.add('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
+            });
+
+            if (viewName === 'home') {
+                viewHome.classList.remove('hidden');
+                viewHome.classList.add('flex');
+                navHomeBtn.classList.add('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
+                navHomeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
+            } else if (viewName === 'result') {
+                viewResult.classList.remove('hidden');
+                viewResult.classList.add('flex');
+            } else if (viewName === 'admin') {
+                viewAdmin.classList.remove('hidden');
+                viewAdmin.classList.add('flex');
+                navAdminBtn.classList.add('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
+                navAdminBtn.classList.remove('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
+                renderAdminTable();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =========================================================================
+        // 5. INLINE SEARCHING INDICATOR & RESULT RENDERING (BELOW SEARCH BAR)
+        // =========================================================================
+        let isSearching = false;
+
+        function executeSearch(rawQuery, sourceView) {
+            if (isSearching) return;
+
+            const trimmed = String(rawQuery || '').trim();
+            if (!trimmed) {
+                showToast('Please enter a DL or CNIC number', 'error');
+                return;
+            }
+
+            isSearching = true;
+
+            const homeSearching = document.getElementById('homeSearchingIndicator');
+            const resultSearching = document.getElementById('resultSearchingIndicator');
+            const homeNotFound = document.getElementById('homeNotFoundAlert');
+            const resultNotFound = document.getElementById('resultNotFoundBanner');
+            const resultTableCard = document.getElementById('resultTableCard');
+            const resultActionsBar = document.getElementById('resultActionsBar');
+
+            if (sourceView === 'home') {
+                homeNotFound.classList.add('hidden');
+                homeSearching.classList.remove('hidden');
+                homeSearching.classList.add('flex');
+            } else {
+                resultNotFound.classList.add('hidden');
+                resultTableCard.classList.add('hidden');
+                resultActionsBar.classList.add('hidden');
+                resultSearching.classList.remove('hidden');
+                resultSearching.classList.add('flex');
+            }
+
+            setTimeout(() => {
+                homeSearching.classList.add('hidden');
+                homeSearching.classList.remove('flex');
+                resultSearching.classList.add('hidden');
+                resultSearching.classList.remove('flex');
+                isSearching = false;
+
+                const record = findRecordByLicense(trimmed);
+
+                if (record) {
+                    homeNotFound.classList.add('hidden');
+                    resultNotFound.classList.add('hidden');
+                    resultTableCard.classList.remove('hidden');
+                    resultActionsBar.classList.remove('hidden');
+
+                    document.getElementById('resultSearchInput').value = record.licenseNumber;
+                    document.getElementById('resLicenseNumber').textContent = record.licenseNumber;
+                    document.getElementById('resName').textContent = record.name;
+                    document.getElementById('resFatherName').textContent = record.fatherName;
+                    document.getElementById('resDob').textContent = record.dob;
+                    document.getElementById('resFirstIssue').textContent = record.firstIssue;
+                    document.getElementById('resIssueRenewal').textContent = record.issueRenewal;
+                    document.getElementById('resValidity').textContent = record.validity;
+                    document.getElementById('resCategory').textContent = record.category;
+
+                    switchView('result');
+                } else {
+                    if (sourceView === 'home') {
+                        document.getElementById('homeNotFoundQuery').textContent = trimmed;
+                        homeNotFound.classList.remove('hidden');
+                    } else {
+                        document.getElementById('resultNotFoundQuery').textContent = trimmed;
+                        resultNotFound.classList.remove('hidden');
+                        resultTableCard.classList.add('hidden');
+                        resultActionsBar.classList.add('hidden');
+                    }
+                }
+            }, 950);
+        }
+
+        document.getElementById('homeSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            executeSearch(document.getElementById('homeSearchInput').value, 'home');
+        });
+
+        document.getElementById('resultSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            executeSearch(document.getElementById('resultSearchInput').value, 'result');
+        });
+
+        // =========================================================================
+        // 6. ADMIN CRUD OPERATIONS
+        // =========================================================================
+        function renderAdminTable(filterText = '') {
+            const tbody = document.getElementById('adminRecordsTableBody');
+            const badge = document.getElementById('recordCountBadge');
+            const q = filterText.trim().toLowerCase();
+
+            const filtered = recordsCache.filter(r =>
+                r.licenseNumber.toLowerCase().includes(q) ||
+                r.name.toLowerCase().includes(q) ||
+                r.fatherName.toLowerCase().includes(q)
+            );
+
+            badge.textContent = recordsCache.length;
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-gray-500 text-sm">
+                            No matching license records found.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach(rec => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-blue-50/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-gray-900 whitespace-nowrap">${escapeHtml(rec.licenseNumber)}</td>
+                    <td class="py-3 px-4 font-medium text-gray-800">${escapeHtml(rec.name)}</td>
+                    <td class="py-3 px-4 text-gray-600 hidden md:table-cell">${escapeHtml(rec.fatherName)}</td>
+                    <td class="py-3 px-4 text-gray-600 hidden sm:table-cell whitespace-nowrap">${escapeHtml(rec.validity)}</td>
+                    <td class="py-3 px-4 text-gray-600 hidden lg:table-cell text-xs font-medium">${escapeHtml(rec.category)}</td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap space-x-1.5">
+                        <button onclick="previewRecord('${escapeAttr(rec.licenseNumber)}')" title="Preview Result Banner" class="px-2.5 py-1.5 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold text-xs transition-colors cursor-pointer">
+                            <i class="fa-solid fa-eye mr-1"></i>Preview
+                        </button>
+                        <button onclick="startEditRecord('${escapeAttr(rec.licenseNumber)}')" title="Edit Record" class="px-2.5 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold text-xs transition-colors cursor-pointer">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="confirmDeleteRecord('${escapeAttr(rec.licenseNumber)}')" title="Delete Record" class="px-2.5 py-1.5 rounded-md bg-red-50 text-[#dc0816] hover:bg-red-100 font-semibold text-xs transition-colors cursor-pointer">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('adminFilterInput').addEventListener('input', function(e) {
+            renderAdminTable(e.target.value);
+        });
+
+        document.getElementById('adminRecordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const originalId = document.getElementById('editOriginalLicense').value.trim();
+            const licenseNumber = document.getElementById('fieldLicenseNumber').value.trim().toUpperCase();
+            const name = document.getElementById('fieldName').value.trim();
+            const fatherName = document.getElementById('fieldFatherName').value.trim();
+            const dob = document.getElementById('fieldDob').value.trim();
+            const firstIssue = document.getElementById('fieldFirstIssue').value.trim();
+            const issueRenewal = document.getElementById('fieldIssueRenewal').value.trim();
+            const validity = document.getElementById('fieldValidity').value.trim();
+            const category = document.getElementById('fieldCategory').value.trim().toUpperCase();
+
+            if (!licenseNumber || !name) return;
+
+            const newRecord = {
+                licenseNumber,
+                name,
+                fatherName,
+                dob,
+                firstIssue,
+                issueRenewal,
+                validity,
+                category
+            };
+
+            if (originalId && normalizeId(originalId) !== normalizeId(licenseNumber)) {
+                await deleteRecordFromCloud(originalId);
+            }
+
+            await saveRecordToCloud(newRecord);
+            showToast(originalId ? `Updated record ${licenseNumber}` : `Saved record ${licenseNumber}`);
+            resetForm();
+        });
+
+        function startEditRecord(licenseNumber) {
+            const rec = findRecordByLicense(licenseNumber);
+            if (!rec) return;
+
+            document.getElementById('editOriginalLicense').value = rec.licenseNumber;
+            document.getElementById('fieldLicenseNumber').value = rec.licenseNumber;
+            document.getElementById('fieldName').value = rec.name;
+            document.getElementById('fieldFatherName').value = rec.fatherName;
+            document.getElementById('fieldDob').value = rec.dob;
+            document.getElementById('fieldFirstIssue').value = rec.firstIssue;
+            document.getElementById('fieldIssueRenewal').value = rec.issueRenewal;
+            document.getElementById('fieldValidity').value = rec.validity;
+            document.getElementById('fieldCategory').value = rec.category;
+
+            document.getElementById('formModeTitle').innerHTML = `
+                <i class="fa-solid fa-pen-to-square text-[#1242b8]"></i>
+                <span>Editing License: ${escapeHtml(rec.licenseNumber)}</span>
+            `;
+            document.getElementById('saveRecordBtnText').textContent = 'Update Record';
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            document.getElementById('viewAdmin').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('adminRecordForm').reset();
+            document.getElementById('editOriginalLicense').value = '';
+            document.getElementById('formModeTitle').innerHTML = `
+                <i class="fa-solid fa-plus-circle text-[#dc0816]"></i>
+                <span>Add New License Record</span>
+            `;
+            document.getElementById('saveRecordBtnText').textContent = 'Save License Record';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        function previewRecord(licenseNumber) {
+            const record = findRecordByLicense(licenseNumber);
+            if (!record) return;
+
+            document.getElementById('homeNotFoundAlert').classList.add('hidden');
+            document.getElementById('resultNotFoundBanner').classList.add('hidden');
+            document.getElementById('resultTableCard').classList.remove('hidden');
+            document.getElementById('resultActionsBar').classList.remove('hidden');
+
+            document.getElementById('resultSearchInput').value = record.licenseNumber;
+            document.getElementById('resLicenseNumber').textContent = record.licenseNumber;
+            document.getElementById('resName').textContent = record.name;
+            document.getElementById('resFatherName').textContent = record.fatherName;
+            document.getElementById('resDob').textContent = record.dob;
+            document.getElementById('resFirstIssue').textContent = record.firstIssue;
+            document.getElementById('resIssueRenewal').textContent = record.issueRenewal;
+            document.getElementById('resValidity').textContent = record.validity;
+            document.getElementById('resCategory').textContent = record.category;
+
+            switchView('result');
+        }
+
+        // =========================================================================
+        // 7. CUSTOM MODAL & TOAST HELPERS
+        // =========================================================================
+        let pendingConfirmCallback = null;
+
+        function openConfirmModal(title, text, onConfirm) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmText').textContent = text;
+            pendingConfirmCallback = onConfirm;
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            pendingConfirmCallback = null;
+        }
+
+        document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirmModal);
+        document.getElementById('confirmProceedBtn').addEventListener('click', async () => {
+            if (typeof pendingConfirmCallback === 'function') {
+                await pendingConfirmCallback();
+            }
+            closeConfirmModal();
+        });
+
+        function confirmDeleteRecord(licenseNumber) {
+            openConfirmModal(
+                'Delete License Record?',
+                `Are you sure you want to permanently remove ${licenseNumber} from the cloud database?`,
+                async () => {
+                    await deleteRecordFromCloud(licenseNumber);
+                    if (document.getElementById('editOriginalLicense').value === licenseNumber) {
+                        resetForm();
+                    }
+                    showToast(`Deleted ${licenseNumber}`);
+                }
+            );
+        }
+
+        function confirmResetDatabase() {
+            openConfirmModal(
+                'Reset Default Database?',
+                'This will restore all default license records including 1110303937455 (Zeeshan) and DL2333786211 (Fursang Lama).',
+                async () => {
+                    await resetCloudDatabase();
+                    resetForm();
+                    showToast('Database restored to default records');
+                }
+            );
+        }
+
+        let toastTimer = null;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            msg.textContent = message;
+            if (type === 'error') {
+                icon.className = 'fa-solid fa-circle-exclamation text-red-400';
+            } else {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escapeAttr(str) {
+            return String(str || '').replace(/'/g, "\\'");
+        }
+
+        // Expose functions globally for inline HTML onclick handlers
+        window.switchView = switchView;
+        window.handleAdminMenuClick = handleAdminMenuClick;
+        window.closeAdminLoginModal = closeAdminLoginModal;
+        window.logoutAdmin = logoutAdmin;
+        window.resetForm = resetForm;
+        window.previewRecord = previewRecord;
+        window.startEditRecord = startEditRecord;
+        window.confirmDeleteRecord = confirmDeleteRecord;
+        window.confirmResetDatabase = confirmResetDatabase;
+
+        // =========================================================================
+        // 8. INITIALIZATION
+        // =========================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAdminNavLabel();
+            renderAdminTable();
+            initCloudSync();
+        });
+    </script>
+</body>
+</html>
