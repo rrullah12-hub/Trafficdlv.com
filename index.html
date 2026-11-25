@@ -18,7 +18,6 @@
             min-height: 100vh;
             margin: 0;
             background-color: #d7ebe5;
-            /* Cloudy pastel mint-green/teal atmospheric watercolor background matching reference screenshots */
             background-image: 
                 radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 42%),
                 radial-gradient(circle at 84% 16%, rgba(192, 230, 220, 0.88) 0%, rgba(192, 230, 220, 0) 46%),
@@ -36,12 +35,10 @@
             font-family: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
         }
 
-        /* Subtle crisp text shadow for the white tagline row */
         .tagline-shadow {
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
         }
 
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -84,7 +81,7 @@
                 </button>
             </div>
 
-            <!-- Navigation Links (Clean: Home & Admin Login / Admin Panel) -->
+            <!-- Navigation Links -->
             <nav class="p-4 space-y-2.5">
                 <button onclick="switchView('home')" id="navHomeBtn" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer">
                     <i class="fa-solid fa-house w-5 text-center text-base"></i>
@@ -105,7 +102,7 @@
 
         <!-- Drawer Footer -->
         <div class="p-4 border-t border-gray-200 bg-gray-50/80 text-xs text-gray-500 flex items-center justify-between">
-            <span class="font-semibold text-gray-600">Verification Portal</span>
+            <span class="font-semibold text-gray-600">Cloud Database</span>
             <span class="flex items-center gap-1.5 text-emerald-600 font-semibold">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
             </span>
@@ -182,7 +179,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- VIEW 1: LANDING / SEARCH VIEW (Authentic match to reference image 2)  -->
+    <!-- VIEW 1: LANDING / SEARCH VIEW                                         -->
     <!-- ===================================================================== -->
     <main id="viewHome" class="flex-1 flex flex-col items-center justify-center px-4 py-10 transition-opacity duration-200">
         <div class="w-full max-w-xl flex flex-col items-center text-center">
@@ -211,13 +208,13 @@
                 </button>
             </form>
 
-            <!-- Simple Inline Searching Indicator (Directly below Search Bar) -->
+            <!-- Simple Inline Searching Indicator -->
             <div id="homeSearchingIndicator" class="hidden w-full max-w-[460px] mt-3.5 py-2.5 px-4 rounded-lg bg-white/85 backdrop-blur-sm border border-white shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
                 <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
                 <span>Searching...</span>
             </div>
 
-            <!-- Clean Inline Not Found Alert (No sample clutter) -->
+            <!-- Clean Inline Not Found Alert -->
             <div id="homeNotFoundAlert" class="hidden w-full max-w-[460px] mt-3.5 bg-red-50/95 border border-red-200 text-red-800 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
                 <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
                 <span>No verification record found for "<strong id="homeNotFoundQuery"></strong>".</span>
@@ -241,7 +238,6 @@
 
             <!-- Three Vertical Trust Badges -->
             <div class="mt-11 flex flex-col items-start space-y-5 text-left">
-                <!-- Digital Security -->
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
@@ -252,7 +248,6 @@
                     <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">Digital Security</span>
                 </div>
 
-                <!-- 24/7 Available -->
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
                         <div class="w-6 h-6 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-2xs">
@@ -264,7 +259,6 @@
                     <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">24/7 Available</span>
                 </div>
 
-                <!-- Global Access -->
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
                         <div class="w-6 h-6 rounded-full bg-[#2563eb] flex items-center justify-center text-white shadow-2xs">
@@ -283,7 +277,7 @@
         </div>
     </main>
 
-<!-- ===================================================================== -->
+    <!-- ===================================================================== -->
     <!-- VIEW 2: RESULT BANNER VIEW                                            -->
     <!-- ===================================================================== -->
     <section id="viewResult" class="hidden flex-1 flex-col items-center px-3 sm:px-6 pt-9 sm:pt-11 pb-14">
@@ -321,13 +315,13 @@
                 </button>
             </form>
 
-            <!-- Simple Inline Searching Indicator Directly Below Search Bar -->
+            <!-- Simple Inline Searching Indicator -->
             <div id="resultSearchingIndicator" class="hidden w-full mb-3.5 py-3 px-4 rounded-[6px] bg-white/90 border border-gray-200/80 shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
                 <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
                 <span>Searching...</span>
             </div>
 
-            <!-- Not Found Banner (Shown if user searches invalid ID from Result view) -->
+            <!-- Not Found Banner -->
             <div id="resultNotFoundBanner" class="hidden w-full bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-[6px] mb-3.5 flex flex-wrap items-center justify-between gap-2 shadow-sm">
                 <div class="flex items-center gap-2.5 text-sm">
                     <i class="fa-solid fa-circle-exclamation text-[#dc0816] text-base"></i>
@@ -338,54 +332,45 @@
                 </button>
             </div>
 
-            <!-- Verification Result Table Card (Directly below Search Bar) -->
+            <!-- Verification Result Table Card -->
             <div id="resultTableCard" class="w-full bg-white rounded-[6px] shadow-[0_3px_12px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-300/90">
-                <!-- Light Gray Header Row -->
                 <div class="bg-[#e5e7eb] px-4 py-2.5 text-center border-b border-gray-300">
                     <span class="font-bold text-[#111827] text-[14px] sm:text-[15px]">
                         License Number: <span id="resLicenseNumber">1110303937455</span>
                     </span>
                 </div>
 
-                <!-- Zebra-Striped 2-Column Data Rows -->
                 <div class="divide-y divide-gray-200/80 text-[13.5px] sm:text-[14.5px]">
-                    <!-- Row 1: White -->
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Name</div>
                         <div id="resName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zeeshan</div>
                     </div>
 
-                    <!-- Row 2: Light Gray -->
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Father Name</div>
                         <div id="resFatherName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zer Ali</div>
                     </div>
 
-                    <!-- Row 3: White -->
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Date of Birth</div>
                         <div id="resDob" class="px-4 py-2.5 text-[#1f2937] font-medium">15 Aug 1996</div>
                     </div>
 
-                    <!-- Row 4: Light Gray -->
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">First Issue</div>
                         <div id="resFirstIssue" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
                     </div>
 
-                    <!-- Row 5: White -->
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Issue / Renewal</div>
                         <div id="resIssueRenewal" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
                     </div>
 
-                    <!-- Row 6: Light Gray -->
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Validity</div>
                         <div id="resValidity" class="px-4 py-2.5 text-[#1f2937] font-medium">09 Mar 2029</div>
                     </div>
 
-                    <!-- Row 7: White -->
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Category</div>
                         <div id="resCategory" class="px-4 py-2.5 text-[#1f2937] font-medium uppercase">M.CYCLE + M.CAR / JEEP</div>
@@ -402,8 +387,9 @@
 
         </div>
     </section>
+
     <!-- ===================================================================== -->
-    <!-- VIEW 3: ADMIN BACKEND PORTAL (Full CRUD Database Management)          -->
+    <!-- VIEW 3: ADMIN BACKEND PORTAL (Firebase Cloud Database Management)     -->
     <!-- ===================================================================== -->
     <section id="viewAdmin" class="hidden flex-1 flex-col items-center px-4 sm:px-6 pt-14 pb-16">
         <div class="w-full max-w-5xl space-y-6">
@@ -412,14 +398,14 @@
             <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-5 sm:p-6 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <div class="flex items-center gap-2.5">
-                        <span class="px-2.5 py-0.5 rounded-md bg-red-100 text-[#dc0816] font-bold text-xs uppercase tracking-wider">Backend Portal</span>
-                        <span class="text-xs text-gray-500 font-medium">DoTM License Database</span>
+                        <span class="px-2.5 py-0.5 rounded-md bg-red-100 text-[#dc0816] font-bold text-xs uppercase tracking-wider">Firebase Cloud Backend</span>
+                        <span class="text-xs text-gray-500 font-medium">DoTM Live Database</span>
                     </div>
                     <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">
                         Driving License Records Management
                     </h1>
                     <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
-                        Add, edit, delete, or preview driving license records. Changes are saved automatically and reflected live on the verification portal.
+                        Add, edit, delete, or preview driving license records. All changes sync live to Firebase Cloud for every user.
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2.5 shrink-0">
@@ -503,8 +489,8 @@
             <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-white overflow-hidden">
                 <div class="p-5 sm:px-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <h3 class="text-base sm:text-lg font-bold text-gray-900">Stored License Records</h3>
-                        <span id="recordCountBadge" class="px-2.5 py-0.5 rounded-full bg-blue-100 text-[#1242b8] font-bold text-xs">6</span>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900">Cloud Stored License Records</h3>
+                        <span id="recordCountBadge" class="px-2.5 py-0.5 rounded-full bg-blue-100 text-[#1242b8] font-bold text-xs">0</span>
                     </div>
                     <div class="relative w-full sm:w-64">
                         <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
@@ -525,7 +511,9 @@
                             </tr>
                         </thead>
                         <tbody id="adminRecordsTableBody" class="divide-y divide-gray-200 text-xs sm:text-sm">
-                            <!-- Rows rendered dynamically via JS -->
+                            <tr>
+                                <td colspan="6" class="py-6 text-center text-gray-500">Connecting to Firebase Database...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -534,552 +522,335 @@
         </div>
     </section>
 
+    <!-- ===================================================================== -->
+    <!-- FIREBASE REALTIME DATABASE & PORTAL LOGIC                             -->
+    <!-- ===================================================================== -->
     <script type="module">
-        // =========================================================================
-        // 1. CLOUD DATABASE IMPORTS & INITIALIZATION
-        // =========================================================================
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nepal-dotm-default-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD5GU6t_t9iMqn-GAlppEMBYMQLjfpSfhI",
+            authDomain: "license-verification-393c7.firebaseapp.com",
+            databaseURL: "https://license-verification-393c7-default-rtdb.firebaseio.com",
+            projectId: "license-verification-393c7",
+            storageBucket: "license-verification-393c7.firebasestorage.app",
+            messagingSenderId: "552336086082",
+            appId: "1:552336086082:web:0cbea87755e21720d1c9db",
+            measurementId: "G-2MRGGDPJQE"
+        };
 
-        let db = null;
-        let auth = null;
-        let currentUser = null;
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const recordsRef = ref(db, 'licenses');
 
-        // =========================================================================
-        // 2. DEFAULT SEED DATA (Includes Zeeshan 1110303937455 + Fursang Lama DL2333786211)
-        // =========================================================================
-        const ADMIN_AUTH_KEY = 'nepal_dotm_admin_logged_in';
-        const COLLECTION_NAME = 'driving_licenses';
+        // Default Admin Credentials
+        const ADMIN_USER = "admin";
+        const ADMIN_PASS = "admin123";
 
-        const DEFAULT_RECORDS = [
-            {
-                licenseNumber: '1110303937455',
-                name: 'Zeeshan',
-                fatherName: 'Zer Ali',
-                dob: '15 Aug 1996',
-                firstIssue: '10 Mar 2019',
-                issueRenewal: '10 Mar 2019',
-                validity: '09 Mar 2029',
-                category: 'M.CYCLE + M.CAR / JEEP'
+        // Default Initial Seed Data
+        const DEFAULT_RECORDS = {
+            "1110303937455": {
+                licenseNumber: "1110303937455",
+                name: "Zeeshan",
+                fatherName: "Zer Ali",
+                dob: "15 Aug 1996",
+                firstIssue: "10 Mar 2019",
+                issueRenewal: "10 Mar 2019",
+                validity: "09 Mar 2029",
+                category: "M.CYCLE + M.CAR / JEEP"
             },
-            {
-                licenseNumber: 'DL2333786211',
-                name: 'Fursang Lama',
-                fatherName: 'Dema Lama',
-                dob: '02 Feb 1994',
-                firstIssue: '25 Apr 2018',
-                issueRenewal: '25 Apr 2018',
-                validity: '24 Apr 2028',
-                category: 'M.CYCLE + M.CAR / JEEP'
-            },
-            {
-                licenseNumber: 'DL0489215430',
-                name: 'Ramesh Bahadur Thapa',
-                fatherName: 'Tek Bahadur Thapa',
-                dob: '14 Aug 1990',
-                firstIssue: '12 Nov 2016',
-                issueRenewal: '15 Nov 2021',
-                validity: '14 Nov 2026',
-                category: 'A - MOTORCYCLE / SCOOTER'
-            },
-            {
-                licenseNumber: 'DL0912457802',
-                name: 'Sita Kumari Shrestha',
-                fatherName: 'Hari Prasad Shrestha',
-                dob: '21 Mar 1996',
-                firstIssue: '08 Jan 2020',
-                issueRenewal: '08 Jan 2020',
-                validity: '07 Jan 2030',
-                category: 'B - CAR / JEEP / DELIVERY VAN'
-            },
-            {
-                licenseNumber: 'DL1178349025',
-                name: 'Bikash Gurung',
-                fatherName: 'Man Bahadur Gurung',
-                dob: '05 Dec 1988',
-                firstIssue: '19 Jun 2014',
-                issueRenewal: '22 Jun 2024',
-                validity: '21 Jun 2029',
-                category: 'A + B + C - TEMPO / AUTO'
-            },
-            {
-                licenseNumber: 'DL3056128894',
-                name: 'Anjali Tamang',
-                fatherName: 'Dorje Tamang',
-                dob: '30 Sep 1998',
-                firstIssue: '11 Feb 2022',
-                issueRenewal: '11 Feb 2022',
-                validity: '10 Feb 2032',
-                category: 'K - SCOOTER / MOPED'
+            "DL2333786211": {
+                licenseNumber: "DL2333786211",
+                name: "Fursang Lama",
+                fatherName: "Dema Lama",
+                dob: "02 Feb 1994",
+                firstIssue: "14 Jun 2018",
+                issueRenewal: "14 Jun 2023",
+                validity: "13 Jun 2028",
+                category: "A, B"
             }
-        ];
+        };
 
-        // =========================================================================
-        // 3. STATE & CLOUD STORAGE HELPERS
-        // =========================================================================
-        let recordsCache = JSON.parse(JSON.stringify(DEFAULT_RECORDS));
+        let allRecordsMap = {};
+        let isAdminLoggedIn = sessionStorage.getItem('dotm_admin_logged_in') === 'true';
 
-        function normalizeId(str) {
-            return String(str || '').replace(/[\s\-]/g, '').toUpperCase();
+        // Sanitize key for Firebase paths
+        function normalizeId(raw) {
+            return String(raw || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
         }
 
-        function getLicensesCollectionRef() {
-            return collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME);
-        }
-
-        function getLicenseDocRef(licenseNumber) {
-            const docId = normalizeId(licenseNumber);
-            return doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, docId);
-        }
-
-        async function seedDefaultRecordsToCloud() {
-            if (!db || !currentUser) return;
-            for (const rec of DEFAULT_RECORDS) {
-                await setDoc(getLicenseDocRef(rec.licenseNumber), rec);
-            }
-        }
-
-        async function saveRecordToCloud(record) {
-            const normalized = normalizeId(record.licenseNumber);
-            const idx = recordsCache.findIndex(r => normalizeId(r.licenseNumber) === normalized);
-            if (idx !== -1) {
-                recordsCache[idx] = record;
-            } else {
-                recordsCache.unshift(record);
-            }
-            renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
-
-            if (!db || !currentUser) return;
+        // Seed default data if database is empty, and listen for live updates
+        async function initDatabase() {
             try {
-                await setDoc(getLicenseDocRef(record.licenseNumber), record);
-            } catch (err) {
-                console.error('Cloud save error:', err);
-                showToast('Failed to sync record to cloud', 'error');
-            }
-        }
-
-        async function deleteRecordFromCloud(licenseNumber) {
-            const target = normalizeId(licenseNumber);
-            recordsCache = recordsCache.filter(r => normalizeId(r.licenseNumber) !== target);
-            renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
-
-            if (!db || !currentUser) return;
-            try {
-                await deleteDoc(getLicenseDocRef(licenseNumber));
-            } catch (err) {
-                console.error('Cloud delete error:', err);
-                showToast('Failed to delete record from cloud', 'error');
-            }
-        }
-
-        async function resetCloudDatabase() {
-            if (!db || !currentUser) {
-                recordsCache = JSON.parse(JSON.stringify(DEFAULT_RECORDS));
-                renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
-                return;
-            }
-            try {
-                const defaultIds = new Set(DEFAULT_RECORDS.map(r => normalizeId(r.licenseNumber)));
-                for (const existing of recordsCache) {
-                    const id = normalizeId(existing.licenseNumber);
-                    if (!defaultIds.has(id)) {
-                        await deleteDoc(getLicenseDocRef(existing.licenseNumber));
-                    }
+                const snapshot = await get(recordsRef);
+                if (!snapshot.exists()) {
+                    await set(recordsRef, DEFAULT_RECORDS);
                 }
-                await seedDefaultRecordsToCloud();
             } catch (err) {
-                console.error('Cloud reset error:', err);
-                showToast('Error resetting cloud database', 'error');
+                console.error("Firebase init error:", err);
+                showToast("Firebase connection error. Check database rules.", true);
             }
-        }
 
-        async function initCloudSync() {
-            if (!firebaseConfig) {
+            onValue(recordsRef, (snapshot) => {
+                allRecordsMap = snapshot.exists() ? snapshot.val() : {};
                 renderAdminTable();
-                return;
-            }
-
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
-                    const cred = await signInAnonymously(auth);
-                    currentUser = cred.user;
-                }
-
-                if (!currentUser) return;
-
-                let isInitialSnapshot = true;
-                onSnapshot(
-                    getLicensesCollectionRef(),
-                    async (snapshot) => {
-                        if (snapshot.empty && isInitialSnapshot) {
-                            isInitialSnapshot = false;
-                            await seedDefaultRecordsToCloud();
-                            return;
-                        }
-                        isInitialSnapshot = false;
-                        const liveList = [];
-                        snapshot.forEach((docSnap) => {
-                            const data = docSnap.data();
-                            if (data && data.licenseNumber) {
-                                liveList.push(data);
-                            }
-                        });
-                        if (liveList.length > 0) {
-                            recordsCache = liveList;
-                        }
-                        renderAdminTable(document.getElementById('adminFilterInput')?.value || '');
-                    },
-                    (error) => {
-                        console.error('Real-time sync error:', error);
-                    }
-                );
-            } catch (err) {
-                console.error('Cloud initialization error:', err);
-            }
+            });
         }
 
-        function findRecordByLicense(query) {
-            const target = normalizeId(query);
-            if (!target) return null;
-            return recordsCache.find(rec => normalizeId(rec.licenseNumber) === target) || null;
+        // Toast Notification
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toastNotification');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMsg = document.getElementById('toastMessage');
+
+            toastMsg.textContent = msg;
+            toastIcon.className = isError
+                ? "fa-solid fa-circle-exclamation text-red-400"
+                : "fa-solid fa-circle-check text-emerald-400";
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
         }
 
-        // =========================================================================
-        // 4. NAVIGATION, MENU DRAWER & ADMIN AUTHENTICATION
-        // =========================================================================
+        // Navigation Drawer Controls
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
         const navDrawer = document.getElementById('navDrawer');
         const drawerBackdrop = document.getElementById('drawerBackdrop');
 
         function openDrawer() {
             drawerBackdrop.classList.remove('hidden');
-            requestAnimationFrame(() => {
-                drawerBackdrop.classList.remove('opacity-0');
-                navDrawer.classList.remove('translate-x-full');
-            });
+            setTimeout(() => drawerBackdrop.classList.remove('opacity-0'), 10);
+            navDrawer.classList.remove('translate-x-full');
         }
 
         function closeDrawer() {
-            drawerBackdrop.classList.add('opacity-0');
             navDrawer.classList.add('translate-x-full');
-            setTimeout(() => {
-                drawerBackdrop.classList.add('hidden');
-            }, 250);
+            drawerBackdrop.classList.add('opacity-0');
+            setTimeout(() => drawerBackdrop.classList.add('hidden'), 200);
         }
 
-        document.getElementById('menuToggleBtn').addEventListener('click', openDrawer);
-        document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+        menuToggleBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
         drawerBackdrop.addEventListener('click', closeDrawer);
 
-        function isAdminAuthenticated() {
-            try {
-                return sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
-            } catch (e) {
-                return false;
-            }
-        }
+        // View Switching
+        window.switchView = function(viewName) {
+            closeDrawer();
+            document.getElementById('viewHome').classList.add('hidden');
+            document.getElementById('viewResult').classList.add('hidden');
+            document.getElementById('viewAdmin').classList.add('hidden');
 
-        function updateAdminNavLabel() {
+            const navHomeBtn = document.getElementById('navHomeBtn');
+            const navAdminBtn = document.getElementById('navAdminBtn');
+
+            navHomeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer";
+            navAdminBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer";
+
+            if (viewName === 'home') {
+                document.getElementById('viewHome').classList.remove('hidden');
+                document.getElementById('homeNotFoundAlert').classList.add('hidden');
+                navHomeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer";
+            } else if (viewName === 'result') {
+                document.getElementById('viewResult').classList.remove('hidden');
+            } else if (viewName === 'admin') {
+                if (!isAdminLoggedIn) {
+                    openAdminLoginModal();
+                    document.getElementById('viewHome').classList.remove('hidden');
+                    return;
+                }
+                document.getElementById('viewAdmin').classList.remove('hidden');
+                navAdminBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer";
+                renderAdminTable();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Admin Auth UI Sync
+        function updateAdminUI() {
             const label = document.getElementById('navAdminLabel');
             const logoutBtn = document.getElementById('navLogoutBtn');
-            if (isAdminAuthenticated()) {
-                label.textContent = 'Admin Panel';
+            if (isAdminLoggedIn) {
+                label.textContent = "Admin Panel";
                 logoutBtn.classList.remove('hidden');
                 logoutBtn.classList.add('flex');
             } else {
-                label.textContent = 'Admin Login';
+                label.textContent = "Admin Login";
                 logoutBtn.classList.add('hidden');
                 logoutBtn.classList.remove('flex');
             }
         }
 
-        function handleAdminMenuClick() {
+        window.handleAdminMenuClick = function() {
             closeDrawer();
-            if (isAdminAuthenticated()) {
+            if (isAdminLoggedIn) {
                 switchView('admin');
             } else {
                 openAdminLoginModal();
             }
-        }
+        };
 
         function openAdminLoginModal() {
-            const modal = document.getElementById('adminLoginModal');
             document.getElementById('loginErrorAlert').classList.add('hidden');
             document.getElementById('adminLoginForm').reset();
+            const modal = document.getElementById('adminLoginModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            setTimeout(() => document.getElementById('loginUsername').focus(), 50);
         }
 
-        function closeAdminLoginModal() {
+        window.closeAdminLoginModal = function() {
             const modal = document.getElementById('adminLoginModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-        }
+        };
 
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const user = document.getElementById('loginUsername').value.trim();
-            const pass = document.getElementById('loginPassword').value.trim();
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value.trim();
 
-            if (user === 'asadullah' && pass === 'khan4000p') {
-                try {
-                    sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-                } catch (err) {}
-                updateAdminNavLabel();
+            if (u === ADMIN_USER && p === ADMIN_PASS) {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('dotm_admin_logged_in', 'true');
+                updateAdminUI();
                 closeAdminLoginModal();
+                showToast("Logged in to Admin Panel");
                 switchView('admin');
-                showToast('Logged in as Administrator');
             } else {
                 document.getElementById('loginErrorAlert').classList.remove('hidden');
             }
         });
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('dotm_admin_logged_in');
+            updateAdminUI();
             closeDrawer();
-            try {
-                sessionStorage.removeItem(ADMIN_AUTH_KEY);
-            } catch (err) {}
-            updateAdminNavLabel();
+            showToast("Logged out successfully");
             switchView('home');
-            showToast('Logged out successfully');
-        }
+        };
 
-        function switchView(viewName) {
-            if (viewName === 'admin' && !isAdminAuthenticated()) {
-                openAdminLoginModal();
-                return;
-            }
+        // Search Functionality (Direct lookup in Firebase Realtime Database)
+        async function searchLicense(queryRaw, source) {
+            const cleanId = normalizeId(queryRaw);
+            if (!cleanId) return;
 
-            closeDrawer();
-
-            const viewHome = document.getElementById('viewHome');
-            const viewResult = document.getElementById('viewResult');
-            const viewAdmin = document.getElementById('viewAdmin');
-
-            const navHomeBtn = document.getElementById('navHomeBtn');
-            const navAdminBtn = document.getElementById('navAdminBtn');
-
-            viewHome.classList.add('hidden');
-            viewResult.classList.add('hidden');
-            viewAdmin.classList.add('hidden');
-
-            [navHomeBtn, navAdminBtn].forEach(btn => {
-                btn.classList.remove('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
-                btn.classList.add('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
-            });
-
-            if (viewName === 'home') {
-                viewHome.classList.remove('hidden');
-                viewHome.classList.add('flex');
-                navHomeBtn.classList.add('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
-                navHomeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
-            } else if (viewName === 'result') {
-                viewResult.classList.remove('hidden');
-                viewResult.classList.add('flex');
-            } else if (viewName === 'admin') {
-                viewAdmin.classList.remove('hidden');
-                viewAdmin.classList.add('flex');
-                navAdminBtn.classList.add('bg-blue-50', 'text-[#1242b8]', 'border-blue-200');
-                navAdminBtn.classList.remove('text-gray-700', 'hover:bg-gray-100', 'border-transparent');
-                renderAdminTable();
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // =========================================================================
-        // 5. INLINE SEARCHING INDICATOR & RESULT RENDERING (BELOW SEARCH BAR)
-        // =========================================================================
-        let isSearching = false;
-
-        function executeSearch(rawQuery, sourceView) {
-            if (isSearching) return;
-
-            const trimmed = String(rawQuery || '').trim();
-            if (!trimmed) {
-                showToast('Please enter a DL or CNIC number', 'error');
-                return;
-            }
-
-            isSearching = true;
-
-            const homeSearching = document.getElementById('homeSearchingIndicator');
-            const resultSearching = document.getElementById('resultSearchingIndicator');
+            const homeLoader = document.getElementById('homeSearchingIndicator');
             const homeNotFound = document.getElementById('homeNotFoundAlert');
-            const resultNotFound = document.getElementById('resultNotFoundBanner');
-            const resultTableCard = document.getElementById('resultTableCard');
-            const resultActionsBar = document.getElementById('resultActionsBar');
+            const resLoader = document.getElementById('resultSearchingIndicator');
+            const resNotFound = document.getElementById('resultNotFoundBanner');
+            const resCard = document.getElementById('resultTableCard');
 
-            if (sourceView === 'home') {
+            if (source === 'home') {
                 homeNotFound.classList.add('hidden');
-                homeSearching.classList.remove('hidden');
-                homeSearching.classList.add('flex');
+                homeLoader.classList.remove('hidden');
+                homeLoader.classList.add('flex');
             } else {
-                resultNotFound.classList.add('hidden');
-                resultTableCard.classList.add('hidden');
-                resultActionsBar.classList.add('hidden');
-                resultSearching.classList.remove('hidden');
-                resultSearching.classList.add('flex');
+                resNotFound.classList.add('hidden');
+                resLoader.classList.remove('hidden');
+                resLoader.classList.add('flex');
             }
 
-            setTimeout(() => {
-                homeSearching.classList.add('hidden');
-                homeSearching.classList.remove('flex');
-                resultSearching.classList.add('hidden');
-                resultSearching.classList.remove('flex');
-                isSearching = false;
+            try {
+                const snap = await get(ref(db, 'licenses/' + cleanId));
+                homeLoader.classList.add('hidden');
+                homeLoader.classList.remove('flex');
+                resLoader.classList.add('hidden');
+                resLoader.classList.remove('flex');
 
-                const record = findRecordByLicense(trimmed);
+                if (snap.exists()) {
+                    const rec = snap.val();
+                    document.getElementById('resLicenseNumber').textContent = rec.licenseNumber || cleanId;
+                    document.getElementById('resName').textContent = rec.name || '-';
+                    document.getElementById('resFatherName').textContent = rec.fatherName || '-';
+                    document.getElementById('resDob').textContent = rec.dob || '-';
+                    document.getElementById('resFirstIssue').textContent = rec.firstIssue || '-';
+                    document.getElementById('resIssueRenewal').textContent = rec.issueRenewal || '-';
+                    document.getElementById('resValidity').textContent = rec.validity || '-';
+                    document.getElementById('resCategory').textContent = rec.category || '-';
 
-                if (record) {
-                    homeNotFound.classList.add('hidden');
-                    resultNotFound.classList.add('hidden');
-                    resultTableCard.classList.remove('hidden');
-                    resultActionsBar.classList.remove('hidden');
-
-                    document.getElementById('resultSearchInput').value = record.licenseNumber;
-                    document.getElementById('resLicenseNumber').textContent = record.licenseNumber;
-                    document.getElementById('resName').textContent = record.name;
-                    document.getElementById('resFatherName').textContent = record.fatherName;
-                    document.getElementById('resDob').textContent = record.dob;
-                    document.getElementById('resFirstIssue').textContent = record.firstIssue;
-                    document.getElementById('resIssueRenewal').textContent = record.issueRenewal;
-                    document.getElementById('resValidity').textContent = record.validity;
-                    document.getElementById('resCategory').textContent = record.category;
-
+                    document.getElementById('resultSearchInput').value = rec.licenseNumber || cleanId;
+                    resNotFound.classList.add('hidden');
+                    resCard.classList.remove('hidden');
                     switchView('result');
                 } else {
-                    if (sourceView === 'home') {
-                        document.getElementById('homeNotFoundQuery').textContent = trimmed;
+                    if (source === 'home') {
+                        document.getElementById('homeNotFoundQuery').textContent = queryRaw.trim();
                         homeNotFound.classList.remove('hidden');
                     } else {
-                        document.getElementById('resultNotFoundQuery').textContent = trimmed;
-                        resultNotFound.classList.remove('hidden');
-                        resultTableCard.classList.add('hidden');
-                        resultActionsBar.classList.add('hidden');
+                        document.getElementById('resultNotFoundQuery').textContent = queryRaw.trim();
+                        resNotFound.classList.remove('hidden');
+                        resCard.classList.add('hidden');
                     }
                 }
-            }, 950);
+            } catch (err) {
+                homeLoader.classList.add('hidden');
+                resLoader.classList.add('hidden');
+                console.error(err);
+                showToast("Error fetching record from Firebase.", true);
+            }
         }
 
-        document.getElementById('homeSearchForm').addEventListener('submit', function(e) {
+        document.getElementById('homeSearchForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            executeSearch(document.getElementById('homeSearchInput').value, 'home');
+            searchLicense(document.getElementById('homeSearchInput').value, 'home');
         });
 
-        document.getElementById('resultSearchForm').addEventListener('submit', function(e) {
+        document.getElementById('resultSearchForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            executeSearch(document.getElementById('resultSearchInput').value, 'result');
+            searchLicense(document.getElementById('resultSearchInput').value, 'result');
         });
 
-        // =========================================================================
-        // 6. ADMIN CRUD OPERATIONS
-        // =========================================================================
-        function renderAdminTable(filterText = '') {
-            const tbody = document.getElementById('adminRecordsTableBody');
-            const badge = document.getElementById('recordCountBadge');
-            const q = filterText.trim().toLowerCase();
+        // Admin CRUD Operations
+        document.getElementById('adminRecordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const originalKey = document.getElementById('editOriginalLicense').value;
+            const rawLicense = document.getElementById('fieldLicenseNumber').value.trim().toUpperCase();
+            const cleanKey = normalizeId(rawLicense);
 
-            const filtered = recordsCache.filter(r =>
-                r.licenseNumber.toLowerCase().includes(q) ||
-                r.name.toLowerCase().includes(q) ||
-                r.fatherName.toLowerCase().includes(q)
-            );
-
-            badge.textContent = recordsCache.length;
-            tbody.innerHTML = '';
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="py-8 text-center text-gray-500 text-sm">
-                            No matching license records found.
-                        </td>
-                    </tr>
-                `;
+            if (!cleanKey) {
+                showToast("Please enter a valid License/CNIC number.", true);
                 return;
             }
 
-            filtered.forEach(rec => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-blue-50/40 transition-colors';
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-bold text-gray-900 whitespace-nowrap">${escapeHtml(rec.licenseNumber)}</td>
-                    <td class="py-3 px-4 font-medium text-gray-800">${escapeHtml(rec.name)}</td>
-                    <td class="py-3 px-4 text-gray-600 hidden md:table-cell">${escapeHtml(rec.fatherName)}</td>
-                    <td class="py-3 px-4 text-gray-600 hidden sm:table-cell whitespace-nowrap">${escapeHtml(rec.validity)}</td>
-                    <td class="py-3 px-4 text-gray-600 hidden lg:table-cell text-xs font-medium">${escapeHtml(rec.category)}</td>
-                    <td class="py-3 px-4 text-right whitespace-nowrap space-x-1.5">
-                        <button onclick="previewRecord('${escapeAttr(rec.licenseNumber)}')" title="Preview Result Banner" class="px-2.5 py-1.5 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold text-xs transition-colors cursor-pointer">
-                            <i class="fa-solid fa-eye mr-1"></i>Preview
-                        </button>
-                        <button onclick="startEditRecord('${escapeAttr(rec.licenseNumber)}')" title="Edit Record" class="px-2.5 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold text-xs transition-colors cursor-pointer">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button onclick="confirmDeleteRecord('${escapeAttr(rec.licenseNumber)}')" title="Delete Record" class="px-2.5 py-1.5 rounded-md bg-red-50 text-[#dc0816] hover:bg-red-100 font-semibold text-xs transition-colors cursor-pointer">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        document.getElementById('adminFilterInput').addEventListener('input', function(e) {
-            renderAdminTable(e.target.value);
-        });
-
-        document.getElementById('adminRecordForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const originalId = document.getElementById('editOriginalLicense').value.trim();
-            const licenseNumber = document.getElementById('fieldLicenseNumber').value.trim().toUpperCase();
-            const name = document.getElementById('fieldName').value.trim();
-            const fatherName = document.getElementById('fieldFatherName').value.trim();
-            const dob = document.getElementById('fieldDob').value.trim();
-            const firstIssue = document.getElementById('fieldFirstIssue').value.trim();
-            const issueRenewal = document.getElementById('fieldIssueRenewal').value.trim();
-            const validity = document.getElementById('fieldValidity').value.trim();
-            const category = document.getElementById('fieldCategory').value.trim().toUpperCase();
-
-            if (!licenseNumber || !name) return;
-
-            const newRecord = {
-                licenseNumber,
-                name,
-                fatherName,
-                dob,
-                firstIssue,
-                issueRenewal,
-                validity,
-                category
+            const recordData = {
+                licenseNumber: rawLicense,
+                name: document.getElementById('fieldName').value.trim(),
+                fatherName: document.getElementById('fieldFatherName').value.trim(),
+                dob: document.getElementById('fieldDob').value.trim(),
+                firstIssue: document.getElementById('fieldFirstIssue').value.trim(),
+                issueRenewal: document.getElementById('fieldIssueRenewal').value.trim(),
+                validity: document.getElementById('fieldValidity').value.trim(),
+                category: document.getElementById('fieldCategory').value.trim().toUpperCase()
             };
 
-            if (originalId && normalizeId(originalId) !== normalizeId(licenseNumber)) {
-                await deleteRecordFromCloud(originalId);
-            }
+            const btnText = document.getElementById('saveRecordBtnText');
+            btnText.textContent = "Saving...";
 
-            await saveRecordToCloud(newRecord);
-            showToast(originalId ? `Updated record ${licenseNumber}` : `Saved record ${licenseNumber}`);
-            resetForm();
+            try {
+                if (originalKey && originalKey !== cleanKey) {
+                    await remove(ref(db, 'licenses/' + originalKey));
+                }
+                await set(ref(db, 'licenses/' + cleanKey), recordData);
+                showToast(originalKey ? "Record updated in Cloud!" : "New record saved to Cloud!");
+                resetForm();
+            } catch (err) {
+                console.error(err);
+                showToast("Failed to save record. Check Firebase rules.", true);
+            } finally {
+                btnText.textContent = "Save License Record";
+            }
         });
 
-        function startEditRecord(licenseNumber) {
-            const rec = findRecordByLicense(licenseNumber);
+        window.editRecord = function(key) {
+            const rec = allRecordsMap[key];
             if (!rec) return;
 
-            document.getElementById('editOriginalLicense').value = rec.licenseNumber;
+            document.getElementById('editOriginalLicense').value = key;
             document.getElementById('fieldLicenseNumber').value = rec.licenseNumber;
             document.getElementById('fieldName').value = rec.name;
             document.getElementById('fieldFatherName').value = rec.fatherName;
@@ -1089,58 +860,32 @@
             document.getElementById('fieldValidity').value = rec.validity;
             document.getElementById('fieldCategory').value = rec.category;
 
-            document.getElementById('formModeTitle').innerHTML = `
-                <i class="fa-solid fa-pen-to-square text-[#1242b8]"></i>
-                <span>Editing License: ${escapeHtml(rec.licenseNumber)}</span>
-            `;
-            document.getElementById('saveRecordBtnText').textContent = 'Update Record';
+            document.getElementById('formModeTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-[#1242b8]"></i><span>Edit License Record (${rec.licenseNumber})</span>`;
+            document.getElementById('saveRecordBtnText').textContent = "Update Record";
             document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('adminRecordForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
 
-            document.getElementById('viewAdmin').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function resetForm() {
+        window.resetForm = function() {
             document.getElementById('adminRecordForm').reset();
-            document.getElementById('editOriginalLicense').value = '';
-            document.getElementById('formModeTitle').innerHTML = `
-                <i class="fa-solid fa-plus-circle text-[#dc0816]"></i>
-                <span>Add New License Record</span>
-            `;
-            document.getElementById('saveRecordBtnText').textContent = 'Save License Record';
+            document.getElementById('editOriginalLicense').value = "";
+            document.getElementById('formModeTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-[#dc0816]"></i><span>Add New License Record</span>`;
+            document.getElementById('saveRecordBtnText').textContent = "Save License Record";
             document.getElementById('cancelEditBtn').classList.add('hidden');
-        }
+        };
 
-        function previewRecord(licenseNumber) {
-            const record = findRecordByLicense(licenseNumber);
-            if (!record) return;
+        window.previewRecord = function(key) {
+            const rec = allRecordsMap[key];
+            if (!rec) return;
+            searchLicense(rec.licenseNumber, 'home');
+        };
 
-            document.getElementById('homeNotFoundAlert').classList.add('hidden');
-            document.getElementById('resultNotFoundBanner').classList.add('hidden');
-            document.getElementById('resultTableCard').classList.remove('hidden');
-            document.getElementById('resultActionsBar').classList.remove('hidden');
-
-            document.getElementById('resultSearchInput').value = record.licenseNumber;
-            document.getElementById('resLicenseNumber').textContent = record.licenseNumber;
-            document.getElementById('resName').textContent = record.name;
-            document.getElementById('resFatherName').textContent = record.fatherName;
-            document.getElementById('resDob').textContent = record.dob;
-            document.getElementById('resFirstIssue').textContent = record.firstIssue;
-            document.getElementById('resIssueRenewal').textContent = record.issueRenewal;
-            document.getElementById('resValidity').textContent = record.validity;
-            document.getElementById('resCategory').textContent = record.category;
-
-            switchView('result');
-        }
-
-        // =========================================================================
-        // 7. CUSTOM MODAL & TOAST HELPERS
-        // =========================================================================
-        let pendingConfirmCallback = null;
-
-        function openConfirmModal(title, text, onConfirm) {
+        // Confirmation Modal Helper
+        let pendingConfirmAction = null;
+        function openConfirmModal(title, text, actionFn) {
             document.getElementById('confirmTitle').textContent = title;
             document.getElementById('confirmText').textContent = text;
-            pendingConfirmCallback = onConfirm;
+            pendingConfirmAction = actionFn;
             const modal = document.getElementById('confirmModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -1150,94 +895,98 @@
             const modal = document.getElementById('confirmModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            pendingConfirmCallback = null;
+            pendingConfirmAction = null;
         }
 
         document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirmModal);
         document.getElementById('confirmProceedBtn').addEventListener('click', async () => {
-            if (typeof pendingConfirmCallback === 'function') {
-                await pendingConfirmCallback();
-            }
+            if (pendingConfirmAction) await pendingConfirmAction();
             closeConfirmModal();
         });
 
-        function confirmDeleteRecord(licenseNumber) {
+        window.deleteRecord = function(key) {
             openConfirmModal(
-                'Delete License Record?',
-                `Are you sure you want to permanently remove ${licenseNumber} from the cloud database?`,
+                "Delete License Record?",
+                `Are you sure you want to delete record ${key} from Firebase Cloud?`,
                 async () => {
-                    await deleteRecordFromCloud(licenseNumber);
-                    if (document.getElementById('editOriginalLicense').value === licenseNumber) {
-                        resetForm();
+                    try {
+                        await remove(ref(db, 'licenses/' + key));
+                        showToast("Record deleted from Cloud");
+                    } catch (err) {
+                        showToast("Error deleting record", true);
                     }
-                    showToast(`Deleted ${licenseNumber}`);
                 }
             );
-        }
+        };
 
-        function confirmResetDatabase() {
+        window.confirmResetDatabase = function() {
             openConfirmModal(
-                'Reset Default Database?',
-                'This will restore all default license records including 1110303937455 (Zeeshan) and DL2333786211 (Fursang Lama).',
+                "Reset to Default Records?",
+                "This will replace current cloud records with the default sample records.",
                 async () => {
-                    await resetCloudDatabase();
-                    resetForm();
-                    showToast('Database restored to default records');
+                    try {
+                        await set(recordsRef, DEFAULT_RECORDS);
+                        resetForm();
+                        showToast("Database reset to default");
+                    } catch (err) {
+                        showToast("Error resetting database", true);
+                    }
                 }
             );
-        }
+        };
 
-        let toastTimer = null;
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toastNotification');
-            const icon = document.getElementById('toastIcon');
-            const msg = document.getElementById('toastMessage');
+        // Render Admin Table
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminRecordsTableBody');
+            const filterText = (document.getElementById('adminFilterInput').value || '').trim().toLowerCase();
+            const keys = Object.keys(allRecordsMap);
 
-            msg.textContent = message;
-            if (type === 'error') {
-                icon.className = 'fa-solid fa-circle-exclamation text-red-400';
-            } else {
-                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            const filteredKeys = keys.filter(k => {
+                const r = allRecordsMap[k];
+                return (
+                    (r.licenseNumber || k).toLowerCase().includes(filterText) ||
+                    (r.name || '').toLowerCase().includes(filterText) ||
+                    (r.fatherName || '').toLowerCase().includes(filterText)
+                );
+            });
+
+            document.getElementById('recordCountBadge').textContent = filteredKeys.length;
+
+            if (filteredKeys.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-gray-500">No matching records found.</td></tr>`;
+                return;
             }
 
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            tbody.innerHTML = filteredKeys.map(k => {
+                const r = allRecordsMap[k];
+                return `
+                    <tr class="hover:bg-blue-50/40 transition-colors">
+                        <td class="py-3 px-4 font-bold text-[#1242b8] whitespace-nowrap">${r.licenseNumber}</td>
+                        <td class="py-3 px-4 font-semibold text-gray-900">${r.name}</td>
+                        <td class="py-3 px-4 text-gray-600 hidden md:table-cell">${r.fatherName}</td>
+                        <td class="py-3 px-4 text-gray-600 hidden sm:table-cell whitespace-nowrap">${r.validity}</td>
+                        <td class="py-3 px-4 text-gray-600 hidden lg:table-cell">${r.category}</td>
+                        <td class="py-3 px-4 text-right whitespace-nowrap space-x-1.5">
+                            <button onclick="previewRecord('${k}')" title="Preview" class="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-xs cursor-pointer">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="editRecord('${k}')" title="Edit" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1242b8] font-semibold text-xs cursor-pointer">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteRecord('${k}')" title="Delete" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-[#dc0816] font-semibold text-xs cursor-pointer">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        function escapeHtml(str) {
-            return String(str || '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
-        }
+        document.getElementById('adminFilterInput').addEventListener('input', renderAdminTable);
 
-        function escapeAttr(str) {
-            return String(str || '').replace(/'/g, "\\'");
-        }
-
-        // Expose functions globally for inline HTML onclick handlers
-        window.switchView = switchView;
-        window.handleAdminMenuClick = handleAdminMenuClick;
-        window.closeAdminLoginModal = closeAdminLoginModal;
-        window.logoutAdmin = logoutAdmin;
-        window.resetForm = resetForm;
-        window.previewRecord = previewRecord;
-        window.startEditRecord = startEditRecord;
-        window.confirmDeleteRecord = confirmDeleteRecord;
-        window.confirmResetDatabase = confirmResetDatabase;
-
-        // =========================================================================
-        // 8. INITIALIZATION
-        // =========================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            updateAdminNavLabel();
-            renderAdminTable();
-            initCloudSync();
-        });
+        // Initialize on page load
+        updateAdminUI();
+        initDatabase();
     </script>
 </body>
 </html>
