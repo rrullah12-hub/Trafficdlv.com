@@ -283,103 +283,19 @@
         </div>
     </main>
 
-    <!-- ===================================================================== -->
-    <!-- VIEW 2: RESULT BANNER VIEW (Exact match to reference screenshot)      -->
+<!-- ===================================================================== -->
+    <!-- VIEW 2: RESULT BANNER VIEW                                            -->
     <!-- ===================================================================== -->
     <section id="viewResult" class="hidden flex-1 flex-col items-center px-3 sm:px-6 pt-9 sm:pt-11 pb-14">
         <div class="w-full max-w-[760px] flex flex-col items-center">
 
             <!-- Official Government Header Banner Card -->
-            <div class="w-full bg-[#f8fafc] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-5 sm:px-9 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 border border-white">
-                
-                <!-- Official Coat of Arms / Emblem of Nepal (Image with crisp SVG Fallback) -->
-                <div class="shrink-0 w-[124px] h-[124px] sm:w-[138px] sm:h-[138px] flex items-center justify-center">
-                    <img 
-                       <img src="https://i.postimg.cc/JhGPsNLv/result-banner.png" alt="Online Driving License System Banner" style="width: 100%; max-width: 850px; height: auto; display: block; margin: 0 auto;">
-                        alt="Emblem of Nepal" 
-                        class="w-full h-full object-contain select-none"
-                        onerror="this.style.display='none'; document.getElementById('nepalEmblemFallback').classList.remove('hidden');"
-                    >
-                    <!-- High-Detail SVG Fallback if offline -->
-                    <svg id="nepalEmblemFallback" viewBox="0 0 240 240" class="hidden w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#bae6fd"/>
-                                <stop offset="100%" stop-color="#e0f2fe"/>
-                            </linearGradient>
-                            <linearGradient id="mountainBlue" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#1d4ed8"/>
-                                <stop offset="100%" stop-color="#1e3a8a"/>
-                            </linearGradient>
-                            <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#22c55e"/>
-                                <stop offset="100%" stop-color="#15803d"/>
-                            </linearGradient>
-                            <clipPath id="innerCircle">
-                                <circle cx="120" cy="118" r="68"/>
-                            </clipPath>
-                        </defs>
-                        <circle cx="120" cy="118" r="72" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-                        <g clip-path="url(#innerCircle)">
-                            <rect x="45" y="45" width="150" height="150" fill="url(#skyGrad)"/>
-                            <polygon points="48,125 84,74 106,102 126,64 156,104 192,125" fill="url(#mountainBlue)"/>
-                            <polygon points="84,74 96,90 88,92 82,86 75,92 68,89" fill="#ffffff"/>
-                            <polygon points="126,64 142,86 133,89 125,81 117,89 109,85" fill="#ffffff"/>
-                            <polygon points="156,104 166,115 154,116 147,112" fill="#ffffff"/>
-                            <path d="M45,130 Q85,104 122,124 T195,122 L195,158 L45,158 Z" fill="url(#hillGrad)"/>
-                            <path d="M45,142 Q95,126 140,140 T195,136 L195,164 L45,164 Z" fill="#16a34a"/>
-                            <rect x="45" y="152" width="150" height="42" fill="#fde047"/>
-                            <path d="M76,125 L94,121 L114,127 L134,132 L162,138 L159,147 L132,144 L110,139 L88,136 L74,132 Z" fill="#ffffff" stroke="#64748b" stroke-width="1"/>
-                            <path d="M90,162 C102,155 112,155 120,161 C128,155 138,155 150,162 L146,174 C134,170 126,173 120,175 C114,173 106,170 94,174 Z" fill="#f3c69f" stroke="#78350f" stroke-width="1.4"/>
-                            <line x1="120" y1="159" x2="120" y2="174" stroke="#78350f" stroke-width="1.2"/>
-                        </g>
-                        <circle cx="120" cy="118" r="68" fill="none" stroke="#991b1b" stroke-width="2"/>
-                        <g fill="#eab308" stroke="#854d0e" stroke-width="0.7">
-                            <path d="M68,162 Q88,176 112,178" fill="none" stroke="#ca8a04" stroke-width="2.5"/>
-                            <ellipse cx="76" cy="166" rx="4.5" ry="2" transform="rotate(28 76 166)"/>
-                            <ellipse cx="86" cy="171" rx="4.5" ry="2" transform="rotate(22 86 171)"/>
-                            <ellipse cx="96" cy="175" rx="4.5" ry="2" transform="rotate(15 96 175)"/>
-                            <ellipse cx="106" cy="177" rx="4.5" ry="2" transform="rotate(8 106 177)"/>
-                            <path d="M172,162 Q152,176 128,178" fill="none" stroke="#ca8a04" stroke-width="2.5"/>
-                            <ellipse cx="164" cy="166" rx="4.5" ry="2" transform="rotate(-28 164 166)"/>
-                            <ellipse cx="154" cy="171" rx="4.5" ry="2" transform="rotate(-22 154 171)"/>
-                            <ellipse cx="144" cy="175" rx="4.5" ry="2" transform="rotate(-15 144 175)"/>
-                            <ellipse cx="134" cy="177" rx="4.5" ry="2" transform="rotate(-8 134 177)"/>
-                        </g>
-                        <g fill="#dc2626" stroke="#7f1d1d" stroke-width="0.9">
-                            <circle cx="52" cy="150" r="9.5"/><circle cx="44" cy="130" r="10"/><circle cx="43" cy="108" r="10"/>
-                            <circle cx="49" cy="86" r="9.5"/><circle cx="62" cy="68" r="9"/><circle cx="79" cy="54" r="8"/>
-                            <circle cx="188" cy="150" r="9.5"/><circle cx="196" cy="130" r="10"/><circle cx="197" cy="108" r="10"/>
-                            <circle cx="191" cy="86" r="9.5"/><circle cx="178" cy="68" r="9"/><circle cx="161" cy="54" r="8"/>
-                        </g>
-                        <g transform="translate(108, 12)">
-                            <line x1="2" y1="0" x2="2" y2="38" stroke="#78350f" stroke-width="2.2"/>
-                            <polygon points="3,2 25,14 10,14 27,28 3,28" fill="#dc2626" stroke="#1e3a8a" stroke-width="1.8"/>
-                            <circle cx="9" cy="11" r="1.8" fill="#ffffff"/>
-                            <circle cx="9" cy="22" r="2.2" fill="#ffffff"/>
-                        </g>
-                        <path d="M44,174 Q120,200 196,174 L203,188 Q120,216 37,188 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.2"/>
-                        <text x="120" y="195" text-anchor="middle" fill="#ffffff" font-size="7.2" font-weight="bold" font-family="Noto Sans Devanagari, sans-serif">
-                            जननी जन्मभूमिश्च स्वर्गादपि गरीयसी
-                        </text>
-                    </svg>
-                </div>
-
-                <!-- Four Stacked Lines of Official Government Typography -->
-                <div class="text-center sm:text-left leading-snug space-y-0.5">
-                    <div class="text-[#111827] font-bold text-[15px] sm:text-[16.5px]">
-                        Government of Nepal
-                    </div>
-                    <div class="text-[#2d58a7] font-semibold text-[15px] sm:text-[18px]">
-                        Ministry of Physical Infrastructure and Transport
-                    </div>
-                    <div class="text-[#111827] font-extrabold text-[17px] sm:text-[21px] tracking-tight">
-                        Department of Transport Management
-                    </div>
-                    <div class="text-[#d62828] font-bold text-[19px] sm:text-[23px] tracking-tight pt-0.5">
-                        Online Driving License System
-                    </div>
-                </div>
+            <div class="w-full bg-[#f8fafc] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] p-3 sm:p-4 flex items-center justify-center border border-white">
+                <img 
+                    src="https://i.postimg.cc/JhGPsNLv/result-banner.png" 
+                    alt="Government of Nepal - Department of Transport Management - Online Driving License System" 
+                    class="w-full max-w-[680px] h-auto object-contain select-none rounded-[4px]"
+                >
             </div>
 
             <!-- Devanagari Sub-heading Centered Below White Card -->
@@ -486,7 +402,6 @@
 
         </div>
     </section>
-
     <!-- ===================================================================== -->
     <!-- VIEW 3: ADMIN BACKEND PORTAL (Full CRUD Database Management)          -->
     <!-- ===================================================================== -->
