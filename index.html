@@ -15,7 +15,8 @@
             min-height: 100vh;
             margin: 0;
             background-color: #d7ebe5;
-            background-image:url('wallpaper.jpg');
+            background-image:
+                url('wallpaper.jpg'),
                 radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 42%),
                 radial-gradient(circle at 84% 16%, rgba(192, 230, 220, 0.88) 0%, rgba(192, 230, 220, 0) 46%),
                 radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0) 52%),
@@ -23,6 +24,9 @@
                 radial-gradient(circle at 86% 78%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 44%),
                 radial-gradient(circle at 52% 90%, rgba(171, 216, 204, 0.78) 0%, rgba(171, 216, 204, 0) 55%),
                 linear-gradient(135deg, #d5ebe5 0%, #e3f1ec 50%, #cde4de 100%);
+            background-size: cover, auto, auto, auto, auto, auto, auto, auto;
+            background-position: center center, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+            background-repeat: no-repeat;
             background-attachment: fixed;
             color: #1f2937;
             overflow-x: hidden;
@@ -46,7 +50,7 @@
         </button>
     </header>
 
-    <!-- Slide-Over Drawer -->
+    <!-- Slide-Over Drawer (Only Home & Admin Login) -->
     <div id="drawerBackdrop" class="fixed inset-0 bg-black/30 backdrop-blur-[1px] z-40 hidden opacity-0 transition-opacity duration-200"></div>
     <aside id="navDrawer" class="fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-white/95 backdrop-blur-md shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between border-l border-gray-200">
         <div>
@@ -64,9 +68,9 @@
                     <i class="fa-solid fa-house w-5 text-center text-base"></i>
                     <span>Home</span>
                 </button>
-                <button type="button" onclick="openAdminPortal()" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                <button type="button" onclick="openAdminLoginModal()" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
                     <i class="fa-solid fa-user-shield w-5 text-center text-base text-[#dc0816]"></i>
-                    <span>Manage Records</span>
+                    <span>Admin Login</span>
                 </button>
             </nav>
         </div>
@@ -77,6 +81,48 @@
             </span>
         </div>
     </aside>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 sm:p-7 border border-gray-100 relative">
+            <button type="button" onclick="closeAdminLoginModal()" aria-label="Close Login Modal" class="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-full bg-blue-50 text-[#1242b8] flex items-center justify-center mb-3.5 mx-auto border border-blue-100">
+                <i class="fa-solid fa-user-lock text-xl"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-gray-900 text-center">Admin Login</h3>
+            <p class="text-xs text-gray-500 text-center mt-1 mb-5">Sign in to manage driving license records</p>
+
+            <div id="loginErrorAlert" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
+                <span>Invalid username or password.</span>
+            </div>
+
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Username</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="loginUsername" required placeholder="Enter username" autocomplete="username" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="password" id="loginPassword" required placeholder="Enter password" autocomplete="current-password" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm shadow-sm transition-colors cursor-pointer">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- VIEW 1: LANDING / SEARCH VIEW -->
     <main id="viewHome" class="flex-1 flex flex-col items-center justify-center px-4 py-10">
@@ -296,6 +342,7 @@
                             <th class="px-4 py-3">Father Name</th>
                             <th class="px-4 py-3">Validity</th>
                             <th class="px-4 py-3">Category</th>
+                            <th class="px-4 py-3 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody id="recordsTableBody" class="divide-y divide-gray-200"></tbody>
@@ -306,6 +353,8 @@
 
     <script>
         const SEARCH_DELAY_MS = 900;
+        const ADMIN_USER = "asadullah";
+        const ADMIN_PASS = "Khan4000p";
         let searchTimer = null;
 
         let records = [
@@ -326,6 +375,8 @@
         const viewAdmin = document.getElementById("viewAdmin");
         const navDrawer = document.getElementById("navDrawer");
         const drawerBackdrop = document.getElementById("drawerBackdrop");
+        const adminLoginModal = document.getElementById("adminLoginModal");
+        const loginErrorAlert = document.getElementById("loginErrorAlert");
 
         function toggleDrawer(open) {
             if (open) {
@@ -345,6 +396,33 @@
         document.getElementById("closeDrawerBtn").addEventListener("click", () => toggleDrawer(false));
         drawerBackdrop.addEventListener("click", () => toggleDrawer(false));
 
+        function openAdminLoginModal() {
+            toggleDrawer(false);
+            loginErrorAlert.classList.add("hidden");
+            document.getElementById("adminLoginForm").reset();
+            adminLoginModal.classList.remove("hidden");
+            adminLoginModal.classList.add("flex");
+        }
+
+        function closeAdminLoginModal() {
+            adminLoginModal.classList.add("hidden");
+            adminLoginModal.classList.remove("flex");
+        }
+
+        document.getElementById("adminLoginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const u = document.getElementById("loginUsername").value.trim();
+            const p = document.getElementById("loginPassword").value;
+
+            if (u === ADMIN_USER && p === ADMIN_PASS) {
+                loginErrorAlert.classList.add("hidden");
+                closeAdminLoginModal();
+                switchView("admin");
+            } else {
+                loginErrorAlert.classList.remove("hidden");
+            }
+        });
+
         function switchView(viewName) {
             toggleDrawer(false);
             viewHome.classList.add("hidden");
@@ -361,10 +439,6 @@
                 viewAdmin.classList.add("flex");
                 renderRecordsTable();
             }
-        }
-
-        function openAdminPortal() {
-            switchView("admin");
         }
 
         function normalizeNumber(val) {
@@ -472,15 +546,25 @@
             renderRecordsTable();
         });
 
+        function deleteRecord(idx) {
+            records.splice(idx, 1);
+            renderRecordsTable();
+        }
+
         function renderRecordsTable() {
             const tbody = document.getElementById("recordsTableBody");
-            tbody.innerHTML = records.map(r => `
+            tbody.innerHTML = records.map((r, idx) => `
                 <tr>
                     <td class="px-4 py-3 font-semibold">${r.licenseNumber}</td>
                     <td class="px-4 py-3">${r.name}</td>
                     <td class="px-4 py-3">${r.fatherName}</td>
                     <td class="px-4 py-3">${r.validity}</td>
                     <td class="px-4 py-3">${r.category}</td>
+                    <td class="px-4 py-3 text-right">
+                        <button type="button" onclick="deleteRecord(${idx})" class="px-3 py-1.5 rounded-lg bg-red-50 hover:bg-[#dc0816] text-[#dc0816] hover:text-white font-semibold text-xs border border-red-200 transition-colors cursor-pointer">
+                            <i class="fa-solid fa-trash mr-1"></i>Delete
+                        </button>
+                    </td>
                 </tr>
             `).join("");
         }
