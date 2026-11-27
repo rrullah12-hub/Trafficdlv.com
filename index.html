@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Driving License Verification System</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter, Noto Sans & Noto Sans Devanagari -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@600;700&family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome for crisp icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
@@ -18,7 +15,7 @@
             min-height: 100vh;
             margin: 0;
             background-color: #d7ebe5;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 42%),
                 radial-gradient(circle at 84% 16%, rgba(192, 230, 220, 0.88) 0%, rgba(192, 230, 220, 0) 46%),
                 radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0) 52%),
@@ -30,213 +27,101 @@
             color: #1f2937;
             overflow-x: hidden;
         }
-
         .devanagari-text {
             font-family: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
         }
-
         .tagline-shadow {
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.04);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.18);
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body class="relative flex flex-col min-h-screen selection:bg-[#1242b8] selection:text-white">
 
-    <!-- Top-Right Minimalist Hamburger Button -->
+    <!-- Top-Right Hamburger Button -->
     <header class="fixed top-0 right-0 z-40 p-4 sm:p-5">
-        <button id="menuToggleBtn" aria-label="Open Navigation Menu" class="p-2 rounded-lg text-gray-900 hover:bg-white/60 active:scale-95 transition-all focus:outline-none cursor-pointer">
+        <button id="menuToggleBtn" type="button" aria-label="Open Navigation Menu" class="p-2 rounded-lg text-gray-900 hover:bg-white/60 active:scale-95 transition-all cursor-pointer">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </button>
     </header>
 
-    <!-- Slide-Over Navigation Drawer -->
+    <!-- Slide-Over Drawer -->
     <div id="drawerBackdrop" class="fixed inset-0 bg-black/30 backdrop-blur-[1px] z-40 hidden opacity-0 transition-opacity duration-200"></div>
     <aside id="navDrawer" class="fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-white/95 backdrop-blur-md shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between border-l border-gray-200">
         <div>
-            <!-- Drawer Header -->
             <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200">
                 <div class="flex items-center gap-2.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-[#dc0816]"></span>
                     <span class="font-bold text-gray-800 text-sm tracking-wide uppercase">Menu</span>
                 </div>
-                <button id="closeDrawerBtn" aria-label="Close Menu" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                <button id="closeDrawerBtn" type="button" aria-label="Close Menu" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-
-            <!-- Navigation Links -->
             <nav class="p-4 space-y-2.5">
-                <button onclick="switchView('home')" id="navHomeBtn" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer">
+                <button type="button" onclick="switchView('home')" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer">
                     <i class="fa-solid fa-house w-5 text-center text-base"></i>
                     <span>Home</span>
                 </button>
-
-                <button onclick="handleAdminMenuClick()" id="navAdminBtn" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer">
+                <button type="button" onclick="openAdminPortal()" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
                     <i class="fa-solid fa-user-shield w-5 text-center text-base text-[#dc0816]"></i>
-                    <span id="navAdminLabel">Admin Login</span>
-                </button>
-
-                <button onclick="logoutAdmin()" id="navLogoutBtn" class="hidden w-full items-center gap-3.5 px-4 py-3 rounded-xl text-left font-bold text-sm text-[#dc0816] hover:bg-red-50 transition-all border border-transparent cursor-pointer">
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center text-base"></i>
-                    <span>Logout</span>
+                    <span>Manage Records</span>
                 </button>
             </nav>
         </div>
-
-        <!-- Drawer Footer -->
         <div class="p-4 border-t border-gray-200 bg-gray-50/80 text-xs text-gray-500 flex items-center justify-between">
-            <span class="font-semibold text-gray-600">Cloud Database</span>
+            <span class="font-semibold text-gray-600">Verification Portal</span>
             <span class="flex items-center gap-1.5 text-emerald-600 font-semibold">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
             </span>
         </div>
     </aside>
 
-    <!-- Admin Login Modal -->
-    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 sm:p-7 border border-gray-100 relative">
-            <button type="button" onclick="closeAdminLoginModal()" aria-label="Close Login Modal" class="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer">
-                <i class="fa-solid fa-xmark text-base"></i>
-            </button>
-
-            <div class="w-12 h-12 rounded-full bg-blue-50 text-[#1242b8] flex items-center justify-center mb-3.5 mx-auto border border-blue-100">
-                <i class="fa-solid fa-user-lock text-xl"></i>
-            </div>
-            <h3 class="text-xl font-extrabold text-gray-900 text-center">Admin Login</h3>
-            <p class="text-xs text-gray-500 text-center mt-1 mb-5">Sign in to manage driving license records</p>
-
-            <div id="loginErrorAlert" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
-                <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
-                <span>Invalid username or password.</span>
-            </div>
-
-            <form id="adminLoginForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Username</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-user text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-                        <input type="text" id="loginUsername" required placeholder="Enter username" autocomplete="username" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-key text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-                        <input type="password" id="loginPassword" required placeholder="Enter password" autocomplete="current-password" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm shadow-sm transition-colors cursor-pointer">
-                    Login to Backend
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast Notification Box -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-sm font-medium border border-gray-700">
-            <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
-            <span id="toastMessage">Action completed</span>
-        </div>
-    </div>
-
-    <!-- Custom Confirmation Modal -->
-    <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-gray-100 transform scale-95 transition-transform">
-            <div class="w-12 h-12 rounded-full bg-red-100 text-[#dc0816] flex items-center justify-center mb-4 mx-auto">
-                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
-            </div>
-            <h3 id="confirmTitle" class="text-lg font-bold text-gray-900 text-center mb-1">Confirm Action</h3>
-            <p id="confirmText" class="text-sm text-gray-600 text-center mb-6">Are you sure you want to proceed?</p>
-            <div class="flex gap-3">
-                <button id="confirmCancelBtn" class="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors cursor-pointer">
-                    Cancel
-                </button>
-                <button id="confirmProceedBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-[#dc0816] text-white font-semibold text-sm hover:bg-red-700 transition-colors shadow-sm cursor-pointer">
-                    Confirm
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- VIEW 1: LANDING / SEARCH VIEW                                         -->
-    <!-- ===================================================================== -->
-    <main id="viewHome" class="flex-1 flex flex-col items-center justify-center px-4 py-10 transition-opacity duration-200">
+    <!-- VIEW 1: LANDING / SEARCH VIEW -->
+    <main id="viewHome" class="flex-1 flex flex-col items-center justify-center px-4 py-10">
         <div class="w-full max-w-xl flex flex-col items-center text-center">
-            
-            <!-- Main Bold Royal Blue Two-Line Heading -->
             <h1 class="text-[28px] sm:text-[36px] md:text-[40px] font-extrabold text-[#1242b8] leading-[1.18] tracking-tight mb-7">
                 Welcome To Online<br>
                 Verification Services
             </h1>
 
-            <!-- Search Input + Crimson Red Search Button -->
             <form id="homeSearchForm" class="w-full max-w-[460px] flex items-stretch shadow-[0_4px_14px_rgba(0,0,0,0.08)] rounded-[6px] overflow-hidden bg-white">
-                <input 
-                    type="text" 
-                    id="homeSearchInput" 
-                    placeholder="Type DL/CNIC Number Without Dash" 
+                <input
+                    type="text"
+                    id="homeSearchInput"
+                    placeholder="Type DL/CNIC Number Without Dash"
                     autocomplete="off"
                     class="flex-1 px-4 py-3.5 text-[14px] sm:text-[15px] text-gray-800 placeholder-gray-400 bg-white focus:outline-none"
                 >
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
+                    id="homeSearchBtn"
                     aria-label="Search License"
-                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] active:bg-[#9e020f] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] disabled:opacity-60 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
                 >
                     <i class="fa-solid fa-magnifying-glass text-[17px]"></i>
                 </button>
             </form>
 
-            <!-- Simple Inline Searching Indicator -->
+            <!-- Searching Indicator on Home -->
             <div id="homeSearchingIndicator" class="hidden w-full max-w-[460px] mt-3.5 py-2.5 px-4 rounded-lg bg-white/85 backdrop-blur-sm border border-white shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
                 <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
                 <span>Searching...</span>
             </div>
 
-            <!-- Clean Inline Not Found Alert -->
+            <!-- Not Found Alert on Home -->
             <div id="homeNotFoundAlert" class="hidden w-full max-w-[460px] mt-3.5 bg-red-50/95 border border-red-200 text-red-800 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
                 <i class="fa-solid fa-circle-exclamation text-[#dc0816]"></i>
                 <span>No verification record found for "<strong id="homeNotFoundQuery"></strong>".</span>
             </div>
 
-            <!-- White Tagline Row with Bullet Dots -->
             <div class="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-7 text-white font-bold text-[17px] sm:text-[19px] tagline-shadow select-none">
-                <span class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
-                    Secure
-                </span>
-                <span class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
-                    Fast
-                </span>
-                <span class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-white inline-block shadow-xs"></span>
-                    Reliable
-                </span>
+                <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-white inline-block"></span>Secure</span>
+                <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-white inline-block"></span>Fast</span>
+                <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-white inline-block"></span>Reliable</span>
             </div>
 
-            <!-- Three Vertical Trust Badges -->
             <div class="mt-11 flex flex-col items-start space-y-5 text-left">
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
@@ -245,77 +130,68 @@
                             <path d="M12 4.2V20.8C15.5 19.6 18 15.8 18 11.5V6.8L12 4.2Z" fill="#86efac"/>
                         </svg>
                     </div>
-                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">Digital Security</span>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px]">Digital Security</span>
                 </div>
-
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
-                        <div class="w-6 h-6 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-2xs">
+                        <div class="w-6 h-6 rounded-full bg-[#dc2626] flex items-center justify-center text-white">
                             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
                         </div>
                     </div>
-                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">24/7 Available</span>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px]">24/7 Available</span>
                 </div>
-
                 <div class="flex items-center gap-3.5">
                     <div class="w-7 h-7 flex items-center justify-center">
-                        <div class="w-6 h-6 rounded-full bg-[#2563eb] flex items-center justify-center text-white shadow-2xs">
+                        <div class="w-6 h-6 rounded-full bg-[#2563eb] flex items-center justify-center text-white">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
                                 <circle cx="12" cy="12" r="9"></circle>
                                 <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
                                 <line x1="3" y1="12" x2="21" y2="12"></line>
-                                <path d="M4.5 7.5h15M4.5 16.5h15"></path>
                             </svg>
                         </div>
                     </div>
-                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px] tracking-tight">Global Access</span>
+                    <span class="text-[#1f2937] font-bold text-[16px] sm:text-[17px]">Global Access</span>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- ===================================================================== -->
-    <!-- VIEW 2: RESULT BANNER VIEW                                            -->
-    <!-- ===================================================================== -->
+    <!-- VIEW 2: RESULT BANNER VIEW -->
     <section id="viewResult" class="hidden flex-1 flex-col items-center px-3 sm:px-6 pt-9 sm:pt-11 pb-14">
         <div class="w-full max-w-[760px] flex flex-col items-center">
-
-            <!-- Official Government Header Banner Card -->
             <div class="w-full bg-[#f8fafc] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] p-3 sm:p-4 flex items-center justify-center border border-white">
-                <img 
-                    src="https://i.postimg.cc/JhGPsNLv/result-banner.png" 
-                    alt="Government of Nepal - Department of Transport Management - Online Driving License System" 
+                <img
+                    src="https://i.postimg.cc/JhGPsNLv/result-banner.png"
+                    alt="Government of Nepal - Department of Transport Management - Online Driving License System"
                     class="w-full max-w-[680px] h-auto object-contain select-none rounded-[4px]"
                 >
             </div>
 
-            <!-- Devanagari Sub-heading Centered Below White Card -->
             <h2 class="devanagari-text text-[#1f2937] font-bold text-[20px] sm:text-[23px] mt-3.5 mb-3 tracking-wide">
                 अनुज्ञा प्रमाणिकरण
             </h2>
 
-            <!-- Active Search Bar Matching Table Width -->
             <form id="resultSearchForm" class="w-full flex items-stretch bg-white rounded-[5px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden border border-gray-200/80 mb-3.5">
-                <input 
-                    type="text" 
-                    id="resultSearchInput" 
-                    placeholder="Type DL/CNIC Number Without Dash" 
+                <input
+                    type="text"
+                    id="resultSearchInput"
+                    placeholder="Type DL/CNIC Number Without Dash"
                     autocomplete="off"
                     class="flex-1 px-4 py-2.5 text-[14px] sm:text-[15px] text-gray-800 bg-white focus:outline-none font-medium"
                 >
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
+                    id="resultSearchBtn"
                     aria-label="Search Again"
-                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] active:bg-[#9e020f] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                    class="w-[52px] bg-[#dc0816] hover:bg-[#b80312] disabled:opacity-60 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
                 >
                     <i class="fa-solid fa-magnifying-glass text-[16px]"></i>
                 </button>
             </form>
 
-            <!-- Simple Inline Searching Indicator -->
+            <!-- Searching Indicator on Result View -->
             <div id="resultSearchingIndicator" class="hidden w-full mb-3.5 py-3 px-4 rounded-[6px] bg-white/90 border border-gray-200/80 shadow-sm items-center justify-center gap-2.5 text-[#1242b8] font-bold text-sm">
                 <i class="fa-solid fa-circle-notch fa-spin text-[#dc0816] text-base"></i>
                 <span>Searching...</span>
@@ -333,225 +209,107 @@
             </div>
 
             <!-- Verification Result Table Card -->
-            <div id="resultTableCard" class="w-full bg-white rounded-[6px] shadow-[0_3px_12px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-300/90">
+            <div id="resultTableCard" class="hidden w-full bg-white rounded-[6px] shadow-[0_3px_12px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-300/90">
                 <div class="bg-[#e5e7eb] px-4 py-2.5 text-center border-b border-gray-300">
                     <span class="font-bold text-[#111827] text-[14px] sm:text-[15px]">
-                        License Number: <span id="resLicenseNumber">1110303937455</span>
+                        License Number: <span id="resLicenseNumber"></span>
                     </span>
                 </div>
-
                 <div class="divide-y divide-gray-200/80 text-[13.5px] sm:text-[14.5px]">
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Name</div>
-                        <div id="resName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zeeshan</div>
+                        <div id="resName" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Father Name</div>
-                        <div id="resFatherName" class="px-4 py-2.5 text-[#1f2937] font-medium">Zer Ali</div>
+                        <div id="resFatherName" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Date of Birth</div>
-                        <div id="resDob" class="px-4 py-2.5 text-[#1f2937] font-medium">15 Aug 1996</div>
+                        <div id="resDob" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">First Issue</div>
-                        <div id="resFirstIssue" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
+                        <div id="resFirstIssue" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Issue / Renewal</div>
-                        <div id="resIssueRenewal" class="px-4 py-2.5 text-[#1f2937] font-medium">10 Mar 2019</div>
+                        <div id="resIssueRenewal" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-[#f4f5f7]">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Validity</div>
-                        <div id="resValidity" class="px-4 py-2.5 text-[#1f2937] font-medium">09 Mar 2029</div>
+                        <div id="resValidity" class="px-4 py-2.5 text-[#1f2937] font-medium"></div>
                     </div>
-
                     <div class="grid grid-cols-2 bg-white">
                         <div class="px-4 py-2.5 font-bold text-[#1f2937] border-r border-gray-200/80">Category</div>
-                        <div id="resCategory" class="px-4 py-2.5 text-[#1f2937] font-medium uppercase">M.CYCLE + M.CAR / JEEP</div>
+                        <div id="resCategory" class="px-4 py-2.5 text-[#1f2937] font-medium uppercase"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Subtle Bottom Action Bar -->
-            <div id="resultActionsBar" class="w-full mt-4 flex items-center justify-start text-xs sm:text-sm text-gray-700 px-1">
-                <button onclick="switchView('home')" class="inline-flex items-center gap-1.5 font-semibold text-gray-700 hover:text-[#1242b8] transition-colors bg-white/75 hover:bg-white px-3.5 py-2 rounded-lg shadow-sm cursor-pointer">
+            <div class="w-full mt-4 flex items-center justify-start text-xs sm:text-sm text-gray-700 px-1">
+                <button type="button" onclick="switchView('home')" class="inline-flex items-center gap-1.5 font-semibold text-gray-700 hover:text-[#1242b8] bg-white/75 hover:bg-white px-3.5 py-2 rounded-lg shadow-sm cursor-pointer">
                     <i class="fa-solid fa-arrow-left text-xs"></i> Back to Home
                 </button>
             </div>
-
         </div>
     </section>
 
-    <!-- ===================================================================== -->
-    <!-- VIEW 3: ADMIN BACKEND PORTAL (Firebase Cloud Database Management)     -->
-    <!-- ===================================================================== -->
+    <!-- VIEW 3: ADMIN RECORDS PORTAL -->
     <section id="viewAdmin" class="hidden flex-1 flex-col items-center px-4 sm:px-6 pt-14 pb-16">
         <div class="w-full max-w-5xl space-y-6">
-
-            <!-- Admin Top Header Card -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-5 sm:p-6 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="bg-white/95 rounded-xl shadow-md p-5 sm:p-6 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <div class="flex items-center gap-2.5">
-                        <span class="px-2.5 py-0.5 rounded-md bg-red-100 text-[#dc0816] font-bold text-xs uppercase tracking-wider">Firebase Cloud Backend</span>
-                        <span class="text-xs text-gray-500 font-medium">DoTM Live Database</span>
-                    </div>
-                    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">
-                        Driving License Records Management
-                    </h1>
-                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
-                        Add, edit, delete, or preview driving license records. All changes sync live to Firebase Cloud for every user.
-                    </p>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900">Driving License Records</h1>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Add or test records for verification search (try <span class="font-semibold">1110303937455</span>).</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-                    <button onclick="switchView('home')" class="px-4 py-2.5 rounded-lg bg-[#1242b8] hover:bg-blue-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-sm flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-house"></i> Home
-                    </button>
-                    <button onclick="confirmResetDatabase()" class="px-3.5 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-rotate-left"></i> Reset Default
-                    </button>
-                    <button onclick="logoutAdmin()" class="px-3.5 py-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-[#dc0816] font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 border border-red-200 cursor-pointer">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
-                    </button>
-                </div>
+                <button type="button" onclick="switchView('home')" class="px-4 py-2.5 rounded-lg bg-[#1242b8] hover:bg-blue-800 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
             </div>
 
-            <!-- Add / Edit Record Form Card -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-5 sm:p-6 border border-white">
-                <div class="flex items-center justify-between border-b border-gray-100 pb-3.5 mb-5">
-                    <h2 id="formModeTitle" class="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
-                        <i class="fa-solid fa-plus-circle text-[#dc0816]"></i>
-                        <span>Add New License Record</span>
-                    </h2>
-                    <button id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs font-semibold text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1.5 rounded-lg cursor-pointer">
-                        Cancel Edit
-                    </button>
-                </div>
-
+            <div class="bg-white/95 rounded-xl shadow-md p-5 sm:p-6 border border-white">
+                <h2 class="text-base sm:text-lg font-bold text-gray-900 mb-4">Add / Update License Record</h2>
                 <form id="adminRecordForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <input type="hidden" id="editOriginalLicense" value="">
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">License / CNIC No. *</label>
-                        <input type="text" id="fieldLicenseNumber" required placeholder="e.g. 1110303937455" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8] uppercase font-medium">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Full Name *</label>
-                        <input type="text" id="fieldName" required placeholder="e.g. Zeeshan" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Father Name *</label>
-                        <input type="text" id="fieldFatherName" required placeholder="e.g. Zer Ali" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Date of Birth *</label>
-                        <input type="text" id="fieldDob" required placeholder="e.g. 15 Aug 1996" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">First Issue Date *</label>
-                        <input type="text" id="fieldFirstIssue" required placeholder="e.g. 10 Mar 2019" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Issue / Renewal *</label>
-                        <input type="text" id="fieldIssueRenewal" required placeholder="e.g. 10 Mar 2019" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Validity Date *</label>
-                        <input type="text" id="fieldValidity" required placeholder="e.g. 09 Mar 2029" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Category *</label>
-                        <input type="text" id="fieldCategory" required placeholder="e.g. M.CYCLE + M.CAR / JEEP" class="w-full px-3.5 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-[#1242b8] uppercase">
-                    </div>
-
-                    <div class="sm:col-span-2 lg:col-span-4 flex justify-end pt-2">
-                        <button type="submit" id="saveRecordBtn" class="px-6 py-2.5 rounded-lg bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            <span id="saveRecordBtnText">Save License Record</span>
+                    <input type="text" id="fieldLicenseNumber" required placeholder="License No. (e.g. 1110303937455)" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm uppercase">
+                    <input type="text" id="fieldName" required placeholder="Full Name" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldFatherName" required placeholder="Father Name" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldDob" required placeholder="DOB (e.g. 15 Aug 1996)" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldFirstIssue" required placeholder="First Issue (e.g. 10 Mar 2019)" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldIssueRenewal" required placeholder="Issue / Renewal" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldValidity" required placeholder="Validity (e.g. 09 Mar 2029)" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="text" id="fieldCategory" required placeholder="Category (e.g. M.CYCLE + M.CAR)" class="px-3.5 py-2 rounded-lg border border-gray-300 text-sm uppercase">
+                    <div class="sm:col-span-2 lg:col-span-4 flex justify-end">
+                        <button type="submit" class="px-6 py-2.5 rounded-lg bg-[#dc0816] hover:bg-red-700 text-white font-bold text-sm cursor-pointer">
+                            Save Record
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Existing Records Table Card -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-white overflow-hidden">
-                <div class="p-5 sm:px-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-center gap-2.5">
-                        <h3 class="text-base sm:text-lg font-bold text-gray-900">Cloud Stored License Records</h3>
-                        <span id="recordCountBadge" class="px-2.5 py-0.5 rounded-full bg-blue-100 text-[#1242b8] font-bold text-xs">0</span>
-                    </div>
-                    <div class="relative w-full sm:w-64">
-                        <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-                        <input type="text" id="adminFilterInput" placeholder="Filter by ID or Name..." class="w-full pl-9 pr-3 py-1.5 rounded-lg border border-gray-300 text-xs sm:text-sm focus:outline-none focus:border-[#1242b8]">
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100/90 text-gray-600 text-[11px] uppercase tracking-wider border-b border-gray-200">
-                                <th class="py-3 px-4 font-bold">License No.</th>
-                                <th class="py-3 px-4 font-bold">Full Name</th>
-                                <th class="py-3 px-4 font-bold hidden md:table-cell">Father Name</th>
-                                <th class="py-3 px-4 font-bold hidden sm:table-cell">Validity</th>
-                                <th class="py-3 px-4 font-bold hidden lg:table-cell">Category</th>
-                                <th class="py-3 px-4 font-bold text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminRecordsTableBody" class="divide-y divide-gray-200 text-xs sm:text-sm">
-                            <tr>
-                                <td colspan="6" class="py-6 text-center text-gray-500">Connecting to Firebase Database...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="bg-white/95 rounded-xl shadow-md border border-white overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead class="bg-gray-100 text-gray-700 text-xs uppercase">
+                        <tr>
+                            <th class="px-4 py-3">License No</th>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Father Name</th>
+                            <th class="px-4 py-3">Validity</th>
+                            <th class="px-4 py-3">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody" class="divide-y divide-gray-200"></tbody>
+                </table>
             </div>
-
         </div>
     </section>
 
-    <!-- ===================================================================== -->
-    <!-- FIREBASE REALTIME DATABASE & PORTAL LOGIC                             -->
-    <!-- ===================================================================== -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    <script>
+        const SEARCH_DELAY_MS = 900;
+        let searchTimer = null;
 
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD5GU6t_t9iMqn-GAlppEMBYMQLjfpSfhI",
-            authDomain: "license-verification-393c7.firebaseapp.com",
-            databaseURL: "https://license-verification-393c7-default-rtdb.firebaseio.com",
-            projectId: "license-verification-393c7",
-            storageBucket: "license-verification-393c7.firebasestorage.app",
-            messagingSenderId: "552336086082",
-            appId: "1:552336086082:web:0cbea87755e21720d1c9db",
-            measurementId: "G-2MRGGDPJQE"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const recordsRef = ref(db, 'licenses');
-
-        // Default Admin Credentials
-        const ADMIN_USER = "Asadkhan";
-        const ADMIN_PASS = "Khan4000p";
-
-        // Default Initial Seed Data
-        const DEFAULT_RECORDS = {
-            "1110303937455": {
+        let records = [
+            {
                 licenseNumber: "1110303937455",
                 name: "Zeeshan",
                 fatherName: "Zer Ali",
@@ -560,433 +318,172 @@
                 issueRenewal: "10 Mar 2019",
                 validity: "09 Mar 2029",
                 category: "M.CYCLE + M.CAR / JEEP"
-            },
-            "DL2333786211": {
-                licenseNumber: "DL2333786211",
-                name: "Fursang Lama",
-                fatherName: "Dema Lama",
-                dob: "02 Feb 1994",
-                firstIssue: "14 Jun 2018",
-                issueRenewal: "14 Jun 2023",
-                validity: "13 Jun 2028",
-                category: "A, B"
             }
-        };
+        ];
 
-        let allRecordsMap = {};
-        let isAdminLoggedIn = sessionStorage.getItem('dotm_admin_logged_in') === 'true';
+        const viewHome = document.getElementById("viewHome");
+        const viewResult = document.getElementById("viewResult");
+        const viewAdmin = document.getElementById("viewAdmin");
+        const navDrawer = document.getElementById("navDrawer");
+        const drawerBackdrop = document.getElementById("drawerBackdrop");
 
-        // Sanitize key for Firebase paths
-        function normalizeId(raw) {
-            return String(raw || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-        }
-
-        // Seed default data if database is empty, and listen for live updates
-        async function initDatabase() {
-            try {
-                const snapshot = await get(recordsRef);
-                if (!snapshot.exists()) {
-                    await set(recordsRef, DEFAULT_RECORDS);
-                }
-            } catch (err) {
-                console.error("Firebase init error:", err);
-                showToast("Firebase connection error. Check database rules.", true);
-            }
-
-            onValue(recordsRef, (snapshot) => {
-                allRecordsMap = snapshot.exists() ? snapshot.val() : {};
-                renderAdminTable();
-            });
-        }
-
-        // Toast Notification
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toastNotification');
-            const toastIcon = document.getElementById('toastIcon');
-            const toastMsg = document.getElementById('toastMessage');
-
-            toastMsg.textContent = msg;
-            toastIcon.className = isError
-                ? "fa-solid fa-circle-exclamation text-red-400"
-                : "fa-solid fa-circle-check text-emerald-400";
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
-
-        // Navigation Drawer Controls
-        const menuToggleBtn = document.getElementById('menuToggleBtn');
-        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-        const navDrawer = document.getElementById('navDrawer');
-        const drawerBackdrop = document.getElementById('drawerBackdrop');
-
-        function openDrawer() {
-            drawerBackdrop.classList.remove('hidden');
-            setTimeout(() => drawerBackdrop.classList.remove('opacity-0'), 10);
-            navDrawer.classList.remove('translate-x-full');
-        }
-
-        function closeDrawer() {
-            navDrawer.classList.add('translate-x-full');
-            drawerBackdrop.classList.add('opacity-0');
-            setTimeout(() => drawerBackdrop.classList.add('hidden'), 200);
-        }
-
-        menuToggleBtn.addEventListener('click', openDrawer);
-        closeDrawerBtn.addEventListener('click', closeDrawer);
-        drawerBackdrop.addEventListener('click', closeDrawer);
-
-        // View Switching
-        window.switchView = function(viewName) {
-            closeDrawer();
-            document.getElementById('viewHome').classList.add('hidden');
-            document.getElementById('viewResult').classList.add('hidden');
-            document.getElementById('viewAdmin').classList.add('hidden');
-
-            const navHomeBtn = document.getElementById('navHomeBtn');
-            const navAdminBtn = document.getElementById('navAdminBtn');
-
-            navHomeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer";
-            navAdminBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm text-gray-700 hover:bg-gray-100 transition-all border border-transparent cursor-pointer";
-
-            if (viewName === 'home') {
-                document.getElementById('viewHome').classList.remove('hidden');
-                document.getElementById('homeNotFoundAlert').classList.add('hidden');
-                navHomeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer";
-            } else if (viewName === 'result') {
-                document.getElementById('viewResult').classList.remove('hidden');
-            } else if (viewName === 'admin') {
-                if (!isAdminLoggedIn) {
-                    openAdminLoginModal();
-                    document.getElementById('viewHome').classList.remove('hidden');
-                    return;
-                }
-                document.getElementById('viewAdmin').classList.remove('hidden');
-                navAdminBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left font-bold text-sm transition-all bg-blue-50 text-[#1242b8] border border-blue-200 cursor-pointer";
-                renderAdminTable();
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        // Admin Auth UI Sync
-        function updateAdminUI() {
-            const label = document.getElementById('navAdminLabel');
-            const logoutBtn = document.getElementById('navLogoutBtn');
-            if (isAdminLoggedIn) {
-                label.textContent = "Admin Panel";
-                logoutBtn.classList.remove('hidden');
-                logoutBtn.classList.add('flex');
+        function toggleDrawer(open) {
+            if (open) {
+                drawerBackdrop.classList.remove("hidden");
+                requestAnimationFrame(() => {
+                    drawerBackdrop.classList.remove("opacity-0");
+                    navDrawer.classList.remove("translate-x-full");
+                });
             } else {
-                label.textContent = "Admin Login";
-                logoutBtn.classList.add('hidden');
-                logoutBtn.classList.remove('flex');
+                drawerBackdrop.classList.add("opacity-0");
+                navDrawer.classList.add("translate-x-full");
+                setTimeout(() => drawerBackdrop.classList.add("hidden"), 200);
             }
         }
 
-        window.handleAdminMenuClick = function() {
-            closeDrawer();
-            if (isAdminLoggedIn) {
-                switchView('admin');
-            } else {
-                openAdminLoginModal();
-            }
-        };
+        document.getElementById("menuToggleBtn").addEventListener("click", () => toggleDrawer(true));
+        document.getElementById("closeDrawerBtn").addEventListener("click", () => toggleDrawer(false));
+        drawerBackdrop.addEventListener("click", () => toggleDrawer(false));
 
-        function openAdminLoginModal() {
-            document.getElementById('loginErrorAlert').classList.add('hidden');
-            document.getElementById('adminLoginForm').reset();
-            const modal = document.getElementById('adminLoginModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        function switchView(viewName) {
+            toggleDrawer(false);
+            viewHome.classList.add("hidden");
+            viewResult.classList.add("hidden");
+            viewAdmin.classList.add("hidden");
+
+            if (viewName === "home") {
+                viewHome.classList.remove("hidden");
+            } else if (viewName === "result") {
+                viewResult.classList.remove("hidden");
+                viewResult.classList.add("flex");
+            } else if (viewName === "admin") {
+                viewAdmin.classList.remove("hidden");
+                viewAdmin.classList.add("flex");
+                renderRecordsTable();
+            }
         }
 
-        window.closeAdminLoginModal = function() {
-            const modal = document.getElementById('adminLoginModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
+        function openAdminPortal() {
+            switchView("admin");
+        }
 
-        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value.trim();
+        function normalizeNumber(val) {
+            return (val || "").replace(/-/g, "").trim().toUpperCase();
+        }
 
-            if (u === ADMIN_USER && p === ADMIN_PASS) {
-                isAdminLoggedIn = true;
-                sessionStorage.setItem('dotm_admin_logged_in', 'true');
-                updateAdminUI();
-                closeAdminLoginModal();
-                showToast("Logged in to Admin Panel");
-                switchView('admin');
+        function populateResult(rec) {
+            document.getElementById("resLicenseNumber").textContent = rec.licenseNumber;
+            document.getElementById("resName").textContent = rec.name;
+            document.getElementById("resFatherName").textContent = rec.fatherName;
+            document.getElementById("resDob").textContent = rec.dob;
+            document.getElementById("resFirstIssue").textContent = rec.firstIssue;
+            document.getElementById("resIssueRenewal").textContent = rec.issueRenewal;
+            document.getElementById("resValidity").textContent = rec.validity;
+            document.getElementById("resCategory").textContent = rec.category;
+        }
+
+        // Shows "Searching..." first, then displays matching record or not-found state
+        function performSearch(rawQuery, source) {
+            const cleanQuery = normalizeNumber(rawQuery);
+            if (!cleanQuery) return;
+
+            if (searchTimer) clearTimeout(searchTimer);
+
+            const homeSpinner = document.getElementById("homeSearchingIndicator");
+            const homeNotFound = document.getElementById("homeNotFoundAlert");
+            const homeBtn = document.getElementById("homeSearchBtn");
+
+            const resultSpinner = document.getElementById("resultSearchingIndicator");
+            const resultNotFound = document.getElementById("resultNotFoundBanner");
+            const resultCard = document.getElementById("resultTableCard");
+            const resultBtn = document.getElementById("resultSearchBtn");
+            const resultInput = document.getElementById("resultSearchInput");
+
+            homeNotFound.classList.add("hidden");
+            resultNotFound.classList.add("hidden");
+
+            if (source === "home") {
+                homeSpinner.classList.remove("hidden");
+                homeSpinner.classList.add("flex");
+                homeBtn.disabled = true;
             } else {
-                document.getElementById('loginErrorAlert').classList.remove('hidden');
-            }
-        });
-
-        window.logoutAdmin = function() {
-            isAdminLoggedIn = false;
-            sessionStorage.removeItem('dotm_admin_logged_in');
-            updateAdminUI();
-            closeDrawer();
-            showToast("Logged out successfully");
-            switchView('home');
-        };
-
-        // Search Functionality (Direct lookup in Firebase Realtime Database)
-        async function searchLicense(queryRaw, source) {
-            const cleanId = normalizeId(queryRaw);
-            if (!cleanId) return;
-
-            const homeLoader = document.getElementById('homeSearchingIndicator');
-            const homeNotFound = document.getElementById('homeNotFoundAlert');
-            const resLoader = document.getElementById('resultSearchingIndicator');
-            const resNotFound = document.getElementById('resultNotFoundBanner');
-            const resCard = document.getElementById('resultTableCard');
-
-            if (source === 'home') {
-                homeNotFound.classList.add('hidden');
-                homeLoader.classList.remove('hidden');
-                homeLoader.classList.add('flex');
-            } else {
-                resNotFound.classList.add('hidden');
-                resLoader.classList.remove('hidden');
-                resLoader.classList.add('flex');
+                resultCard.classList.add("hidden");
+                resultSpinner.classList.remove("hidden");
+                resultSpinner.classList.add("flex");
+                resultBtn.disabled = true;
             }
 
-            try {
-                const snap = await get(ref(db, 'licenses/' + cleanId));
-                homeLoader.classList.add('hidden');
-                homeLoader.classList.remove('flex');
-                resLoader.classList.add('hidden');
-                resLoader.classList.remove('flex');
+            searchTimer = setTimeout(() => {
+                const match = records.find(r => normalizeNumber(r.licenseNumber) === cleanQuery);
 
-                if (snap.exists()) {
-                    const rec = snap.val();
-                    document.getElementById('resLicenseNumber').textContent = rec.licenseNumber || cleanId;
-                    document.getElementById('resName').textContent = rec.name || '-';
-                    document.getElementById('resFatherName').textContent = rec.fatherName || '-';
-                    document.getElementById('resDob').textContent = rec.dob || '-';
-                    document.getElementById('resFirstIssue').textContent = rec.firstIssue || '-';
-                    document.getElementById('resIssueRenewal').textContent = rec.issueRenewal || '-';
-                    document.getElementById('resValidity').textContent = rec.validity || '-';
-                    document.getElementById('resCategory').textContent = rec.category || '-';
+                homeSpinner.classList.add("hidden");
+                homeSpinner.classList.remove("flex");
+                resultSpinner.classList.add("hidden");
+                resultSpinner.classList.remove("flex");
+                homeBtn.disabled = false;
+                resultBtn.disabled = false;
 
-                    document.getElementById('resultSearchInput').value = rec.licenseNumber || cleanId;
-                    resNotFound.classList.add('hidden');
-                    resCard.classList.remove('hidden');
-                    switchView('result');
+                if (match) {
+                    populateResult(match);
+                    resultInput.value = match.licenseNumber;
+                    switchView("result");
+                    resultCard.classList.remove("hidden");
+                    resultNotFound.classList.add("hidden");
+                } else if (source === "home") {
+                    document.getElementById("homeNotFoundQuery").textContent = rawQuery.trim();
+                    homeNotFound.classList.remove("hidden");
                 } else {
-                    if (source === 'home') {
-                        document.getElementById('homeNotFoundQuery').textContent = queryRaw.trim();
-                        homeNotFound.classList.remove('hidden');
-                    } else {
-                        document.getElementById('resultNotFoundQuery').textContent = queryRaw.trim();
-                        resNotFound.classList.remove('hidden');
-                        resCard.classList.add('hidden');
-                    }
+                    switchView("result");
+                    resultCard.classList.add("hidden");
+                    document.getElementById("resultNotFoundQuery").textContent = rawQuery.trim();
+                    resultNotFound.classList.remove("hidden");
                 }
-            } catch (err) {
-                homeLoader.classList.add('hidden');
-                resLoader.classList.add('hidden');
-                console.error(err);
-                showToast("Error fetching record from Firebase.", true);
-            }
+            }, SEARCH_DELAY_MS);
         }
 
-        document.getElementById('homeSearchForm').addEventListener('submit', (e) => {
+        document.getElementById("homeSearchForm").addEventListener("submit", (e) => {
             e.preventDefault();
-            searchLicense(document.getElementById('homeSearchInput').value, 'home');
+            performSearch(document.getElementById("homeSearchInput").value, "home");
         });
 
-        document.getElementById('resultSearchForm').addEventListener('submit', (e) => {
+        document.getElementById("resultSearchForm").addEventListener("submit", (e) => {
             e.preventDefault();
-            searchLicense(document.getElementById('resultSearchInput').value, 'result');
+            performSearch(document.getElementById("resultSearchInput").value, "result");
         });
 
-        // Admin CRUD Operations
-        document.getElementById('adminRecordForm').addEventListener('submit', async (e) => {
+        document.getElementById("adminRecordForm").addEventListener("submit", (e) => {
             e.preventDefault();
-            const originalKey = document.getElementById('editOriginalLicense').value;
-            const rawLicense = document.getElementById('fieldLicenseNumber').value.trim().toUpperCase();
-            const cleanKey = normalizeId(rawLicense);
-
-            if (!cleanKey) {
-                showToast("Please enter a valid License/CNIC number.", true);
-                return;
-            }
-
-            const recordData = {
-                licenseNumber: rawLicense,
-                name: document.getElementById('fieldName').value.trim(),
-                fatherName: document.getElementById('fieldFatherName').value.trim(),
-                dob: document.getElementById('fieldDob').value.trim(),
-                firstIssue: document.getElementById('fieldFirstIssue').value.trim(),
-                issueRenewal: document.getElementById('fieldIssueRenewal').value.trim(),
-                validity: document.getElementById('fieldValidity').value.trim(),
-                category: document.getElementById('fieldCategory').value.trim().toUpperCase()
+            const lic = normalizeNumber(document.getElementById("fieldLicenseNumber").value);
+            const newRec = {
+                licenseNumber: lic,
+                name: document.getElementById("fieldName").value.trim(),
+                fatherName: document.getElementById("fieldFatherName").value.trim(),
+                dob: document.getElementById("fieldDob").value.trim(),
+                firstIssue: document.getElementById("fieldFirstIssue").value.trim(),
+                issueRenewal: document.getElementById("fieldIssueRenewal").value.trim(),
+                validity: document.getElementById("fieldValidity").value.trim(),
+                category: document.getElementById("fieldCategory").value.trim().toUpperCase()
             };
+            const idx = records.findIndex(r => normalizeNumber(r.licenseNumber) === lic);
+            if (idx >= 0) records[idx] = newRec;
+            else records.push(newRec);
 
-            const btnText = document.getElementById('saveRecordBtnText');
-            btnText.textContent = "Saving...";
-
-            try {
-                if (originalKey && originalKey !== cleanKey) {
-                    await remove(ref(db, 'licenses/' + originalKey));
-                }
-                await set(ref(db, 'licenses/' + cleanKey), recordData);
-                showToast(originalKey ? "Record updated in Cloud!" : "New record saved to Cloud!");
-                resetForm();
-            } catch (err) {
-                console.error(err);
-                showToast("Failed to save record. Check Firebase rules.", true);
-            } finally {
-                btnText.textContent = "Save License Record";
-            }
+            e.target.reset();
+            renderRecordsTable();
         });
 
-        window.editRecord = function(key) {
-            const rec = allRecordsMap[key];
-            if (!rec) return;
-
-            document.getElementById('editOriginalLicense').value = key;
-            document.getElementById('fieldLicenseNumber').value = rec.licenseNumber;
-            document.getElementById('fieldName').value = rec.name;
-            document.getElementById('fieldFatherName').value = rec.fatherName;
-            document.getElementById('fieldDob').value = rec.dob;
-            document.getElementById('fieldFirstIssue').value = rec.firstIssue;
-            document.getElementById('fieldIssueRenewal').value = rec.issueRenewal;
-            document.getElementById('fieldValidity').value = rec.validity;
-            document.getElementById('fieldCategory').value = rec.category;
-
-            document.getElementById('formModeTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-[#1242b8]"></i><span>Edit License Record (${rec.licenseNumber})</span>`;
-            document.getElementById('saveRecordBtnText').textContent = "Update Record";
-            document.getElementById('cancelEditBtn').classList.remove('hidden');
-            document.getElementById('adminRecordForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        };
-
-        window.resetForm = function() {
-            document.getElementById('adminRecordForm').reset();
-            document.getElementById('editOriginalLicense').value = "";
-            document.getElementById('formModeTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-[#dc0816]"></i><span>Add New License Record</span>`;
-            document.getElementById('saveRecordBtnText').textContent = "Save License Record";
-            document.getElementById('cancelEditBtn').classList.add('hidden');
-        };
-
-        window.previewRecord = function(key) {
-            const rec = allRecordsMap[key];
-            if (!rec) return;
-            searchLicense(rec.licenseNumber, 'home');
-        };
-
-        // Confirmation Modal Helper
-        let pendingConfirmAction = null;
-        function openConfirmModal(title, text, actionFn) {
-            document.getElementById('confirmTitle').textContent = title;
-            document.getElementById('confirmText').textContent = text;
-            pendingConfirmAction = actionFn;
-            const modal = document.getElementById('confirmModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        function renderRecordsTable() {
+            const tbody = document.getElementById("recordsTableBody");
+            tbody.innerHTML = records.map(r => `
+                <tr>
+                    <td class="px-4 py-3 font-semibold">${r.licenseNumber}</td>
+                    <td class="px-4 py-3">${r.name}</td>
+                    <td class="px-4 py-3">${r.fatherName}</td>
+                    <td class="px-4 py-3">${r.validity}</td>
+                    <td class="px-4 py-3">${r.category}</td>
+                </tr>
+            `).join("");
         }
-
-        function closeConfirmModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            pendingConfirmAction = null;
-        }
-
-        document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirmModal);
-        document.getElementById('confirmProceedBtn').addEventListener('click', async () => {
-            if (pendingConfirmAction) await pendingConfirmAction();
-            closeConfirmModal();
-        });
-
-        window.deleteRecord = function(key) {
-            openConfirmModal(
-                "Delete License Record?",
-                `Are you sure you want to delete record ${key} from Firebase Cloud?`,
-                async () => {
-                    try {
-                        await remove(ref(db, 'licenses/' + key));
-                        showToast("Record deleted from Cloud");
-                    } catch (err) {
-                        showToast("Error deleting record", true);
-                    }
-                }
-            );
-        };
-
-        window.confirmResetDatabase = function() {
-            openConfirmModal(
-                "Reset to Default Records?",
-                "This will replace current cloud records with the default sample records.",
-                async () => {
-                    try {
-                        await set(recordsRef, DEFAULT_RECORDS);
-                        resetForm();
-                        showToast("Database reset to default");
-                    } catch (err) {
-                        showToast("Error resetting database", true);
-                    }
-                }
-            );
-        };
-
-        // Render Admin Table
-        function renderAdminTable() {
-            const tbody = document.getElementById('adminRecordsTableBody');
-            const filterText = (document.getElementById('adminFilterInput').value || '').trim().toLowerCase();
-            const keys = Object.keys(allRecordsMap);
-
-            const filteredKeys = keys.filter(k => {
-                const r = allRecordsMap[k];
-                return (
-                    (r.licenseNumber || k).toLowerCase().includes(filterText) ||
-                    (r.name || '').toLowerCase().includes(filterText) ||
-                    (r.fatherName || '').toLowerCase().includes(filterText)
-                );
-            });
-
-            document.getElementById('recordCountBadge').textContent = filteredKeys.length;
-
-            if (filteredKeys.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-gray-500">No matching records found.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filteredKeys.map(k => {
-                const r = allRecordsMap[k];
-                return `
-                    <tr class="hover:bg-blue-50/40 transition-colors">
-                        <td class="py-3 px-4 font-bold text-[#1242b8] whitespace-nowrap">${r.licenseNumber}</td>
-                        <td class="py-3 px-4 font-semibold text-gray-900">${r.name}</td>
-                        <td class="py-3 px-4 text-gray-600 hidden md:table-cell">${r.fatherName}</td>
-                        <td class="py-3 px-4 text-gray-600 hidden sm:table-cell whitespace-nowrap">${r.validity}</td>
-                        <td class="py-3 px-4 text-gray-600 hidden lg:table-cell">${r.category}</td>
-                        <td class="py-3 px-4 text-right whitespace-nowrap space-x-1.5">
-                            <button onclick="previewRecord('${k}')" title="Preview" class="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-xs cursor-pointer">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                            <button onclick="editRecord('${k}')" title="Edit" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1242b8] font-semibold text-xs cursor-pointer">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button onclick="deleteRecord('${k}')" title="Delete" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-[#dc0816] font-semibold text-xs cursor-pointer">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        document.getElementById('adminFilterInput').addEventListener('input', renderAdminTable);
-
-        // Initialize on page load
-        updateAdminUI();
-        initDatabase();
     </script>
 </body>
 </html>
